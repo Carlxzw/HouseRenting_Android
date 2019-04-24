@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@mipmap/menu_ic_house"
+        android:title="@string/title_renting" />
+
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@mipmap/menu_ic_house2"
+        android:title="@string/title_request" />
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@mipmap/menu_ic_mine"
+        android:title="@string/title_mines" />
+
+</menu>

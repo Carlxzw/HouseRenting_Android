@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dp_10"
+    android:background="@android:color/white"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:src="@mipmap/menu_ic_mine"
+        android:id="@+id/iv_house_cover"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="@dimen/dp_6"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:text="title"
+
+            android:layout_margin="@dimen/dp_6"
+            android:id="@+id/tv_house_title"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:text="address"
+            android:id="@+id/tv_house_address"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_6"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="type"
+                android:layout_marginRight="@dimen/dp_6"
+                android:id="@+id/tv_house_type"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="area"
+                android:id="@+id/tv_house_area"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="price"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:textColor="@color/colorAccent"
+            android:id="@+id/tv_house_price"/>
+
+    </LinearLayout>
+
+</LinearLayout>

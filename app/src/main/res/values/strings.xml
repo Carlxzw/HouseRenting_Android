@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">HouseRenting_Android</string>
+    <string name="title_renting">租房</string>
+    <string name="title_request">求租</string>
+    <string name="title_mines">我的信息</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

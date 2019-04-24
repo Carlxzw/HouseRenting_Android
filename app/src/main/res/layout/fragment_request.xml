@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context=".view.RequestFragment">
+
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp_6"
+        android:layout_marginRight="@dimen/dp_6"
+        android:id="@+id/lv_request_list" />
+
+</LinearLayout>
