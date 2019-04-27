@@ -1,6 +1,7 @@
 package com.example.administer.houserenting_android.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ public class MineFragment extends Fragment {
     private MineFunctionAdapter mineFunctionAdapter;//功能列表适配器
     private TextView userName;//用户名
     private ImageView userIcon;//用户头像
+
     public MineFragment() {
         // Required empty public constructor
     }
@@ -51,11 +53,22 @@ public class MineFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
         functionList = view.findViewById(R.id.rv_mine_function_list);
+        userIcon = view.findViewById(R.id.iv_user_icon);
         mineFunctionAdapter = new MineFunctionAdapter(getContext());
         functionList.setLayoutManager(new LinearLayoutManager(getContext()));
         functionList.setAdapter(mineFunctionAdapter);
         // Inflate the layout for this fragment
+        initListener();
         return view;
+    }
+
+    private void initListener(){
+        userIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(),LoginActivity.class));
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

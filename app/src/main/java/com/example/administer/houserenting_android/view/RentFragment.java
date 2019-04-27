@@ -1,6 +1,7 @@
 package com.example.administer.houserenting_android.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import com.example.administer.houserenting_android.R;
 import com.example.administer.houserenting_android.adapter.HouseListAdapter;
 import com.example.administer.houserenting_android.model.RoomInfo;
 import com.github.jdsjlzx.ItemDecoration.LuGridItemDecoration;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
@@ -86,6 +88,12 @@ public class RentFragment extends Fragment {
         houseListAdapter = new HouseListAdapter(getContext());
         houseListAdapter.setDatalist(roomInfoList);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(houseListAdapter);
+        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                startActivity(new Intent(getActivity(),HouseDetailActivity.class));
+            }
+        });
     }
 
     private void fakeData(){

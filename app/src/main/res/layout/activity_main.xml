@@ -52,6 +52,7 @@
         android:layout_marginBottom="80dp"
         android:src="@mipmap/ic_add"
         android:padding="@dimen/dp_10"
+        android:id="@+id/add_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.975"

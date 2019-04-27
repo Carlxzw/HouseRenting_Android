@@ -1,8 +1,10 @@
 package com.example.administer.houserenting_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,14 +14,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.administer.houserenting_android.adapter.ViewPagerAdapter;
+import com.example.administer.houserenting_android.view.AddHouseActivity;
 import com.example.administer.houserenting_android.view.MineFragment;
 import com.example.administer.houserenting_android.view.RentFragment;
 import com.example.administer.houserenting_android.view.RequestFragment;
 
 public class MainActivity extends AppCompatActivity {
-    private ViewPager viewPager;
-    private BottomNavigationView navigation;
-    private ViewGroup searchBar;
+    private ViewPager viewPager;//内容容器
+    private BottomNavigationView navigation;//底部导航栏
+    private ViewGroup searchBar;//搜索栏
+    private FloatingActionButton addButton;//添加按钮
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -29,13 +33,16 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     searchBar.setVisibility(View.VISIBLE);
+                    addButton.setVisibility(View.VISIBLE);
                     viewPager.setCurrentItem(0);
                     return true;
                 case R.id.navigation_dashboard:
                     searchBar.setVisibility(View.VISIBLE);
+                    addButton.setVisibility(View.VISIBLE);
                     viewPager.setCurrentItem(1);
                     return true;
                 case R.id.navigation_notifications:
+                    addButton.setVisibility(View.GONE);
                     searchBar.setVisibility(View.GONE);
                     viewPager.setCurrentItem(2);
                     return true;
@@ -50,17 +57,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initView();
+        initListener();
 
     }
 
+    //视图初始化
     private void initView(){
         navigation= (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setItemIconTintList(null);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         viewPager = findViewById(R.id.viewpager);
         searchBar = findViewById(R.id.search_bar);
+        addButton = findViewById(R.id.add_button);
         initViewPager();
     }
+
+    private void initListener(){
+        addButton.setOnClickListener(onClickListener);
+    }
+    //监听初始化
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.add_button:
+                    startActivity(new Intent(getApplicationContext(),AddHouseActivity.class));
+                    break;
+            }
+        }
+    };
 
     private void initViewPager(){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
