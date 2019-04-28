@@ -69,6 +69,19 @@ public class MineFragment extends Fragment {
                 startActivity(new Intent(getContext(),LoginActivity.class));
             }
         });
+        //功能列表监听器
+        mineFunctionAdapter.AddOnClickLientener(new MineFunctionAdapter.OnClickListener() {
+            @Override
+            public void onClickListener(int position) {
+                switch (position){
+                    //预约列表
+                    case 0:
+                        startActivity(new Intent(getContext(),AssignmentActivity.class));
+                        break;
+                }
+
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -9,7 +9,6 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@mipmap/menu_ic_house"
         android:id="@+id/iv_item_fun_list_icon"/>
     <TextView
         android:layout_width="wrap_content"
@@ -19,11 +18,12 @@
         android:layout_gravity="center"
         android:text="FunctionName"
         android:layout_weight="1"
+        android:textSize="20dp"
         android:id="@+id/tv_item_fun_list_name"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_media_play"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@mipmap/ic_next"
         android:layout_gravity="center"/>
 </LinearLayout>

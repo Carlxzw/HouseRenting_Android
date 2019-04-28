@@ -6,186 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.HouseDetailActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/iv_house_detail_cover"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
 
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-
-
-            <LinearLayout
-                android:id="@+id/linearLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/search_card_corners"
-                android:elevation="3dp"
-                android:orientation="vertical"
-                android:padding="@dimen/dp_10"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/iv_house_detail_cover"
-                app:layout_constraintVertical_bias="0.326">
-
-                <TextView
-                    android:id="@+id/tv_house_detail_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="标题"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10">
-
-                    <TextView
-                        android:id="@+id/tv_house_detail_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="价格：1000"
-                        android:textColor="@android:color/holo_red_light" />
-
-                    <TextView
-                        android:id="@+id/tv_house_detail_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="户型：三房一厅"
-                        android:textColor="@android:color/holo_red_light" />
-
-                    <TextView
-                        android:id="@+id/tv_house_detail_area"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="面积：100平方"
-                        android:textColor="@android:color/holo_red_light" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="房屋设备"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_house_detail_equipment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:id="@+id/linearLayout4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="房屋简介"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_house_detail_info"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="房屋评价"/>
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rv_house_detail_evaluate">
-
-                </android.support.v7.widget.RecyclerView>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/ll_apointment_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:padding="@dimen/dp_10"
-        android:elevation="3dp"
-        android:gravity="center"
-        android:background="@drawable/button_card_corners"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:text="预约看房" />
-    </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_back_button"
         android:layout_width="@dimen/dp_40"
@@ -197,7 +18,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/background_circle"
         android:orientation="horizontal"
-        android:elevation="3dp"
+        android:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.024"
@@ -211,5 +32,203 @@
             android:padding="@dimen/dp_10"
             android:src="@mipmap/back" />
     </LinearLayout>
-    
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical">
+           <android.support.constraint.ConstraintLayout
+               android:id="@+id/constraintLayout2"
+               android:layout_width="match_parent"
+               android:layout_height="250dp">
+
+               <ImageView
+                   android:id="@+id/iv_house_detail_cover"
+                   android:layout_width="match_parent"
+                   android:layout_height="200dp"
+                   android:scaleType="centerCrop"
+                   android:src="@mipmap/city_bg"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="1.0"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintVertical_bias="0.0" />
+
+               <LinearLayout
+                   android:id="@+id/linearLayout2"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="16dp"
+                   android:layout_marginTop="8dp"
+                   android:layout_marginEnd="16dp"
+                   android:layout_marginBottom="16dp"
+                   android:background="@drawable/search_card_corners"
+                   android:elevation="3dp"
+                   android:orientation="vertical"
+                   android:padding="@dimen/dp_10"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="1.0"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toTopOf="@+id/iv_house_detail_cover"
+                   app:layout_constraintVertical_bias="1.0">
+
+                   <TextView
+                       android:id="@+id/tv_house_detail_name"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="标题"
+                       android:textStyle="bold" />
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="@dimen/dp_10">
+
+                       <TextView
+                           android:id="@+id/tv_house_detail_price"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:text="价格：1000"
+                           android:textColor="@android:color/holo_red_light" />
+
+                       <TextView
+                           android:id="@+id/tv_house_detail_type"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:text="户型：三房一厅"
+                           android:textColor="@android:color/holo_red_light" />
+
+                       <TextView
+                           android:id="@+id/tv_house_detail_area"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:text="面积：100平方"
+                           android:textColor="@android:color/holo_red_light" />
+
+                   </LinearLayout>
+
+               </LinearLayout>
+           </android.support.constraint.ConstraintLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+               <LinearLayout
+                   android:id="@+id/linearLayout3"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="16dp"
+                   android:layout_marginTop="16dp"
+                   android:layout_marginEnd="16dp"
+                   android:orientation="vertical"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.0"
+                   app:layout_constraintStart_toStartOf="parent">
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginBottom="5dp"
+                       android:text="房屋设备"
+                       android:textSize="20dp"
+                       android:textStyle="bold" />
+
+                   <android.support.v7.widget.RecyclerView
+                       android:id="@+id/rv_house_detail_equipment"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content" />
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:id="@+id/linearLayout4"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="16dp"
+                   android:layout_marginTop="16dp"
+                   android:layout_marginEnd="16dp"
+                   android:orientation="vertical"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.0"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginBottom="5dp"
+                       android:text="房屋简介"
+                       android:textSize="20dp"
+                       android:textStyle="bold" />
+
+                   <TextView
+                       android:id="@+id/tv_house_detail_info"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content" />
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="16dp"
+                   android:layout_marginTop="16dp"
+                   android:layout_marginEnd="16dp"
+                   android:orientation="vertical"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintHorizontal_bias="0.0"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginBottom="5dp"
+                       android:text="房屋评价"
+                       android:textSize="20dp"
+                       android:textStyle="bold" />
+
+                   <android.support.v7.widget.RecyclerView
+                       android:id="@+id/rv_house_detail_evaluate"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+
+                   </android.support.v7.widget.RecyclerView>
+               </LinearLayout>
+
+
+           </LinearLayout>
+       </LinearLayout>
+   </ScrollView>
+    <LinearLayout
+        android:id="@+id/ll_apointment_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_card_corners"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="预约看房"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
