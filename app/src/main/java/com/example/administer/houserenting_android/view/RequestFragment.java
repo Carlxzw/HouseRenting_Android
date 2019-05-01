@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 
 import com.example.administer.houserenting_android.R;
 import com.example.administer.houserenting_android.adapter.HouseListAdapter;
+import com.example.administer.houserenting_android.adapter.RequestListAdapter;
 import com.example.administer.houserenting_android.model.RoomInfo;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
@@ -30,10 +32,11 @@ public class RequestFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private LRecyclerView recyclerView;
-    private List<RoomInfo> roomInfoList;
-    private HouseListAdapter houseListAdapter;
-    private LRecyclerViewAdapter lRecyclerViewAdapter;
+    private LRecyclerView recyclerView;//数据列表
+    private List<RoomInfo> roomInfoList;//房屋数据
+    private RequestListAdapter houseListAdapter;//列表适配器
+    private LRecyclerViewAdapter lRecyclerViewAdapter;//刷新适配器
+    private int pageSize;
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -59,8 +62,6 @@ public class RequestFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -71,19 +72,33 @@ public class RequestFragment extends Fragment {
         recyclerView = view.findViewById(R.id.lv_request_list);
         // Inflate the layout for this fragment
         initData();
+        houseListAdapter = new RequestListAdapter(getContext());
+        houseListAdapter.setDatalist(roomInfoList,false);
+        lRecyclerViewAdapter = new LRecyclerViewAdapter(houseListAdapter);
+        //添加空白view，避免与搜索栏重叠
+        View header = LayoutInflater.from(getContext()).inflate(R.layout.empty_title_layout,container, false);
+        lRecyclerViewAdapter.addHeaderView(header);
+
         recyclerView.setAdapter(lRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         return view;
     }
 
-    private void initData(){
 
+    //初始化数据
+    private void initData(){
         roomInfoList = new ArrayList<>();
         fakeData();
-        houseListAdapter = new HouseListAdapter(getContext());
-        houseListAdapter.setDatalist(roomInfoList);
-        lRecyclerViewAdapter = new LRecyclerViewAdapter(houseListAdapter);
+
+
+        recyclerView.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recyclerView.refreshComplete(pageSize);
+            }
+        });
+
     }
 
     private void fakeData(){
@@ -93,6 +108,7 @@ public class RequestFragment extends Fragment {
             roomInfo.setRoomTitle("标题"+i);
             roomInfo.setRoomArea("面积"+i);
             roomInfo.setRoomType("户型"+i);
+            roomInfo.setRoomPrice("1000-2000元");
             roomInfoList.add(roomInfo);
         }
     }

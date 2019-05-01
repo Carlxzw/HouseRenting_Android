@@ -26,7 +26,8 @@
         <activity android:name=".view.HouseDetailActivity" />
         <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.AddHouseActivity" />
-        <activity android:name=".view.AssignmentActivity"></activity>
+        <activity android:name=".view.AssignmentActivity" />
+        <activity android:name=".view.MyRoomActivity"></activity>
     </application>
 
 </manifest>

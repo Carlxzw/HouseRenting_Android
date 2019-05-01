@@ -16,6 +16,7 @@ import com.example.administer.houserenting_android.adapter.HouseListAdapter;
 import com.example.administer.houserenting_android.model.RoomInfo;
 import com.github.jdsjlzx.ItemDecoration.LuGridItemDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
@@ -23,23 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RentFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-//    private OnFragmentInteractionListener mListener;
-
-
-
-    private LRecyclerView recyclerView;
-    private List<RoomInfo> roomInfoList;
-    private HouseListAdapter houseListAdapter;
-    private LRecyclerViewAdapter lRecyclerViewAdapter;
+    private LRecyclerView recyclerView;//数据列表
+    private List<RoomInfo> roomInfoList;//房屋数据
+    private HouseListAdapter houseListAdapter;//列表适配器
+    private LRecyclerViewAdapter lRecyclerViewAdapter;//刷新适配器
+    private int pageSize;
 
     public RentFragment() {
         // Required empty public constructor
@@ -62,10 +52,6 @@ public class RentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -76,6 +62,9 @@ public class RentFragment extends Fragment {
         // Inflate the layout for this fragment
         initData();
         recyclerView.setAdapter(lRecyclerViewAdapter);
+        //添加空白view，避免与搜索栏重叠
+        View header = LayoutInflater.from(getContext()).inflate(R.layout.empty_title_layout,container, false);
+        lRecyclerViewAdapter.addHeaderView(header);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         return view;
@@ -92,6 +81,13 @@ public class RentFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 startActivity(new Intent(getActivity(),HouseDetailActivity.class));
+            }
+        });
+
+        recyclerView.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recyclerView.refreshComplete(pageSize);
             }
         });
     }
