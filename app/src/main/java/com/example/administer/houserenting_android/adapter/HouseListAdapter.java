@@ -24,7 +24,10 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.Hous
         mDataList = new ArrayList<>();
     }
 
-    public void setDatalist(List<RoomInfo> list){
+    public void setDatalist(List<RoomInfo> list,boolean isRefresh){
+        if (isRefresh){
+            mDataList.clear();
+        }
         mDataList.addAll(list);
         notifyDataSetChanged();
     }

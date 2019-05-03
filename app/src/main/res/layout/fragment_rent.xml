@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+
     tools:context=".view.RentFragment">
 
     <com.github.jdsjlzx.recyclerview.LRecyclerView
@@ -11,6 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dp_6"
         android:layout_marginRight="@dimen/dp_6"
+        android:layout_marginBottom="40dp"
         android:id="@+id/lv_rent_list" />
 
 </FrameLayout>

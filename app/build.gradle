@@ -5,7 +5,7 @@ android {
     defaultConfig {
         applicationId "com.example.administer.houserenting_android"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -38,4 +38,8 @@ dependencies {
 
     // 目前支持常见的 4 种图片加载库，必须在下面四个图片加载库中选择一个添加依赖
     implementation 'com.github.bumptech.glide:glide:4.3.1'
+
+    //网络请求框架
+    implementation 'com.squareup.okhttp3:okhttp:3.4.1'
+    implementation 'com.google.code.gson:gson:2.8.2'
 }

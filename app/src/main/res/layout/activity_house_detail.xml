@@ -144,10 +144,7 @@
                        android:textSize="20dp"
                        android:textStyle="bold" />
 
-                   <android.support.v7.widget.RecyclerView
-                       android:id="@+id/rv_house_detail_equipment"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content" />
+                   <include layout="@layout/list_house_device_layout" />
 
                </LinearLayout>
 
