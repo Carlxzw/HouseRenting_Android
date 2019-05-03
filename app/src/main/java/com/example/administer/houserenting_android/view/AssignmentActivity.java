@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -50,7 +51,9 @@ public class AssignmentActivity extends AppCompatActivity {
             tab_assignment.addTab(tab);
         }
         lRecyclerView = findViewById(R.id.lv_assignment);
-
+        //添加空白view，避免与搜索栏重叠
+        View header = LayoutInflater.from(this).inflate(R.layout.empty_title_layout,null, false);
+        lRecyclerViewAdapter.addHeaderView(header);
         lRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         lRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
         appointmentListAdapter = new AppointmentListAdapter(getApplicationContext());

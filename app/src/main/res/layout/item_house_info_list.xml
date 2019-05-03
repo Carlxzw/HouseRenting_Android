@@ -6,16 +6,18 @@
     android:padding="@dimen/dp_10"
     android:background="@android:color/white"
     android:orientation="horizontal">
+
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="match_parent"
-        android:src="@mipmap/menu_ic_mine"
-        android:id="@+id/iv_house_cover"/>
+        android:id="@+id/iv_house_cover"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:scaleType="center"
+        android:src="@mipmap/city_bg" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:padding="@dimen/dp_6"
+
         android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
@@ -31,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_6"
             android:text="address"
+            android:singleLine="true"
             android:id="@+id/tv_house_address"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -48,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="area"
                 android:id="@+id/tv_house_area"/>
+
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"

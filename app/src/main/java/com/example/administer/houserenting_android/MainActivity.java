@@ -81,7 +81,12 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.add_button:
-                    startActivity(new Intent(getApplicationContext(),AddHouseActivity.class));
+                    if (viewPager.getCurrentItem()==0){
+                        startActivity(new Intent(getApplicationContext(),AddHouseActivity.class).putExtra("title","添加租房信息"));
+                    }else {
+                        startActivity(new Intent(getApplicationContext(),AddHouseActivity.class).putExtra("title","添加求租信息"));
+                    }
+
                     break;
             }
         }

@@ -158,20 +158,22 @@ public class RentFragment extends Fragment {
      * 获取数据
      */
     private void getListData(){
-        String listUrl = URLConstrant.urlHead+"roominfoController/queryroominfoList?start="+page+"&num="+pageSize;
+        String listUrl = URLConstrant.urlHead+"roominfoController/queryroominfoList?start="+page+"&num="+pageSize;//请求地址
         OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
+                //请求失败
                 e.printStackTrace();
             }
             @Override
             public void onResponse(String response) {
+                //请求成功
                 try {
-                    JSONObject  jb = new JSONObject(response);
+                    JSONObject  jb = new JSONObject(response);//数据转换为jsonObject
                     String result = jb.getString("data");//获取返回的数据内容
                     roomInfoList = new Gson().fromJson(result,new TypeToken<List<RoomInfo>>(){}.getType());//将获取的json转换为实体集合
                     Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();//刷新完成提示
-                    houseListAdapter.setDatalist(roomInfoList,true);
+                    houseListAdapter.setDatalist(roomInfoList,true);//设置适配器的数据
                     recyclerView.refreshComplete(pageSize);//刷新完成
                     lRecyclerViewAdapter.notifyDataSetChanged();//必须调用此方法
                     page+=1;//增加页数

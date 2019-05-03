@@ -7,12 +7,16 @@
     tools:context=".view.AddHouseActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_60">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="60dp">
 
         <include layout="@layout/list_house_detail_layout" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_back_button"
         android:layout_width="@dimen/dp_40"
@@ -23,20 +27,49 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/background_circle"
-        android:orientation="horizontal"
         android:elevation="3dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.024"
+        app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.015">
+        app:layout_constraintVertical_bias="0.023">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
             android:src="@mipmap/back" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_40"
+        android:layout_margin="@dimen/dp_10"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/background_circle"
+        android:elevation="3dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ll_done_button"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintStart_toEndOf="@+id/ll_back_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.019">
+
+        <TextView
+            android:id="@+id/tv_house_add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:text="添加租房信息" />
     </LinearLayout>
 
     <LinearLayout

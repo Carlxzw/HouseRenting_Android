@@ -105,7 +105,7 @@ public class RequestFragment extends Fragment {
         for (int i=0;i<10;i++){
             RoomInfo roomInfo = new RoomInfo();
             roomInfo.setRoomAddress("地址"+i);
-            roomInfo.setRoomTitle("标题"+i);
+            roomInfo.setRoomTitle("求租信息"+i);
             roomInfo.setRoomArea("面积"+i);
             roomInfo.setRoomType("户型"+i);
             roomInfo.setRoomPrice("1000-2000元");
