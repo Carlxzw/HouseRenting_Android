@@ -42,4 +42,6 @@ dependencies {
     //网络请求框架
     implementation 'com.squareup.okhttp3:okhttp:3.4.1'
     implementation 'com.google.code.gson:gson:2.8.2'
+    //权限申请
+    implementation 'pub.devrel:easypermissions:2.0.0'
 }

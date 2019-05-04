@@ -85,9 +85,10 @@
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/lv_search_rent_list"
         android:layout_width="match_parent"
-        android:layout_height="494dp"
+        android:layout_height="match_parent"
+
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="120dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -100,15 +101,15 @@
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/lv_search_request_list"
         android:layout_width="match_parent"
-        android:layout_height="494dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginTop="120dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tl_search_tab"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/tl_search_tab"
+        app:layout_constraintVertical_bias="0.428" />
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.example.administer.houserenting_android.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administer.houserenting_android.R;
 import com.example.administer.houserenting_android.adapter.MineFunctionAdapter;
+import com.example.administer.houserenting_android.model.UserInfo;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 
 public class MineFragment extends Fragment {
@@ -54,11 +59,13 @@ public class MineFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
         functionList = view.findViewById(R.id.rv_mine_function_list);
         userIcon = view.findViewById(R.id.iv_user_icon);
+        userName = view.findViewById(R.id.tv_mine_user_name);
         mineFunctionAdapter = new MineFunctionAdapter(getContext());
         functionList.setLayoutManager(new LinearLayoutManager(getContext()));
         functionList.setAdapter(mineFunctionAdapter);
         // Inflate the layout for this fragment
         initListener();
+        refreshUserName();
         return view;
     }
 
@@ -66,22 +73,52 @@ public class MineFragment extends Fragment {
         userIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(),LoginActivity.class));
+                if(userName.getText().equals("请登录")){
+                    startActivity(new Intent(getContext(),LoginActivity.class));
+                    return;
+                }
+
             }
         });
         //功能列表监听器
         mineFunctionAdapter.AddOnClickLientener(new MineFunctionAdapter.OnClickListener() {
             @Override
             public void onClickListener(int position) {
+                if(userName.getText().equals("请登录")){
+                    Toast.makeText(getContext(),"请先登录",Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(getContext(),LoginActivity.class));
+                    return;
+                }
                 switch (position){
                     //预约列表
                     case 0:
                         startActivity(new Intent(getContext(),AssignmentActivity.class));
                         break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
                 }
 
             }
         });
+    }
+
+    private void refreshUserName(){
+        try {
+            SharedPreferences sp = getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+            String userJson = sp.getString("userJson","");
+            if (userJson!=""){
+                UserInfo userInfo = new Gson().fromJson(userJson,UserInfo.class);
+                if (userName!=null){
+                    userName.setText(userInfo.getUserName()+"，欢迎您");
+                }
+
+            }
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -95,6 +132,7 @@ public class MineFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        refreshUserName();
 //        if (context instanceof OnFragmentInteractionListener) {
 //            mListener = (OnFragmentInteractionListener) context;
 //        } else {

@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dp_10"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingLeft="@dimen/dp_10"
     android:background="@android:color/white"
     android:orientation="horizontal">
     <LinearLayout
@@ -18,8 +19,9 @@
             android:singleLine="true"
             android:textStyle="bold"
             android:text="title"
-            android:textSize="@dimen/dp_22"
+            android:textSize="18dp"
             android:layout_marginLeft="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_4"
             android:id="@+id/tv_house_title"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,7 +29,23 @@
             android:layout_marginLeft="@dimen/dp_6"
 
             android:orientation="horizontal">
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:layout_weight="1"
+                android:text="address"
+                android:id="@+id/tv_house_address"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:text="price"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/dp_6"
+                android:id="@+id/tv_house_price"/>
         </LinearLayout>
 
         <LinearLayout
@@ -49,23 +67,9 @@
                 android:text="area"
                 android:layout_weight="1"
                 android:textSize="15dp"
+                android:gravity="right"
                 android:id="@+id/tv_house_area"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:layout_weight="1"
-                android:text="address"
-                android:id="@+id/tv_house_address"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:text="price"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:layout_marginLeft="@dimen/dp_6"
-                android:id="@+id/tv_house_price"/>
+
         </LinearLayout>
 
 

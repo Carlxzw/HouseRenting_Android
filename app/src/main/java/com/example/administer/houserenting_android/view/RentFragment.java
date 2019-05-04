@@ -83,10 +83,11 @@ public class RentFragment extends Fragment {
         lRecyclerViewAdapter.addHeaderView(header);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));//设置布局，LinearLayout为纵向列表布局
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));//添加每个列表项的分割线
+//        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));//添加每个列表项的分割线
         return view;
     }
 
+    //数据化初始化
     private void initData(){
         roomInfoList = new ArrayList<>();
         houseListAdapter = new HouseListAdapter(getContext());

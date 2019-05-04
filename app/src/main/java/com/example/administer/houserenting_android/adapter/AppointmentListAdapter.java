@@ -68,11 +68,26 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     @Override
     public void onBindViewHolder(@NonNull AppointmentListAdapter.HouseListViewHolder houseListViewHolder, int i) {
         AppointmentInfo appointmentInfo  = mDataList.get(i);
-        houseListViewHolder.name.setText(appointmentInfo.getAppointmenter().userName);
+        if (appointmentInfo.getAppointmenter()!=null){
+            houseListViewHolder.name.setText(appointmentInfo.getAppointmenter().getUserName());
+            houseListViewHolder.phone.setText(appointmentInfo.getAppointmenter().getPhone());
+        }
+
         houseListViewHolder.address.setText(appointmentInfo.getRoomNo().getRoomAddress());
         houseListViewHolder.time.setText(appointmentInfo.getAppointmentDate());
-        houseListViewHolder.state.setText(appointmentInfo.getAppointmentState());
-        houseListViewHolder.phone.setText(appointmentInfo.getAppointmenter().getPhone());
+        switch (appointmentInfo.getAppointmentState()){
+            case "0":
+                houseListViewHolder.state.setText("预约成功");
+                break;
+            case "1":
+                houseListViewHolder.state.setText("已拒绝");
+                break;
+            case "-1":
+                houseListViewHolder.state.setText("已申请");
+                break;
+
+        }
+
 
 
     }
