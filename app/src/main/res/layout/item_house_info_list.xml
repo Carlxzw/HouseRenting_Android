@@ -33,10 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_6"
             android:text="address"
-            android:singleLine="true"
             android:id="@+id/tv_house_address"/>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_6"
             android:orientation="horizontal">
@@ -51,16 +50,20 @@
                 android:layout_height="wrap_content"
                 android:text="area"
                 android:id="@+id/tv_house_area"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="price"
+                android:textStyle="bold"
+                android:textSize="@dimen/dp_22"
+                android:layout_marginLeft="@dimen/dp_6"
+                android:textColor="@color/colorAccent"
+                android:gravity="right"
+                android:layout_weight="1"
+                android:id="@+id/tv_house_price"/>
 
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="price"
-            android:textStyle="bold"
-            android:layout_marginLeft="@dimen/dp_6"
-            android:textColor="@color/colorAccent"
-            android:id="@+id/tv_house_price"/>
+
 
     </LinearLayout>
 

@@ -9,34 +9,38 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.administer.houserenting_android.R;
 import com.example.administer.houserenting_android.adapter.HouseListAdapter;
 import com.example.administer.houserenting_android.adapter.RequestListAdapter;
+import com.example.administer.houserenting_android.constrant.URLConstrant;
 import com.example.administer.houserenting_android.model.RoomInfo;
+import com.example.administer.houserenting_android.utils.CallBackUtil;
+import com.example.administer.houserenting_android.utils.OkhttpUtil;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+
 
 public class RequestFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private int page = 0;
     private LRecyclerView recyclerView;//数据列表
     private List<RoomInfo> roomInfoList;//房屋数据
     private RequestListAdapter houseListAdapter;//列表适配器
     private LRecyclerViewAdapter lRecyclerViewAdapter;//刷新适配器
-    private int pageSize;
+    private int pageSize = 20;
 
 //    private OnFragmentInteractionListener mListener;
 
@@ -81,7 +85,6 @@ public class RequestFragment extends Fragment {
 
         recyclerView.setAdapter(lRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         return view;
     }
 
@@ -89,29 +92,19 @@ public class RequestFragment extends Fragment {
     //初始化数据
     private void initData(){
         roomInfoList = new ArrayList<>();
-        fakeData();
+        getListData();
 
 
         recyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                recyclerView.refreshComplete(pageSize);
+                page = 0;
+                getListData();
             }
         });
 
     }
 
-    private void fakeData(){
-        for (int i=0;i<10;i++){
-            RoomInfo roomInfo = new RoomInfo();
-            roomInfo.setRoomAddress("地址"+i);
-            roomInfo.setRoomTitle("求租信息"+i);
-            roomInfo.setRoomArea("面积"+i);
-            roomInfo.setRoomType("户型"+i);
-            roomInfo.setRoomPrice("1000-2000元");
-            roomInfoList.add(roomInfo);
-        }
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -151,4 +144,40 @@ public class RequestFragment extends Fragment {
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
+
+    /**
+     * 获取数据
+     */
+    private void getListData(){
+        String listUrl = URLConstrant.urlHead+"roominfoController/queryallrentapp/100?start="+page+"&num="+pageSize;//请求地址
+        OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                //请求失败
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(String response) {
+                //请求成功
+                try {
+                    JSONObject jb = new JSONObject(response);//数据转换为jsonObject
+                    String result = jb.getString("data");//获取返回的数据内容
+                    roomInfoList = new Gson().fromJson(result,new TypeToken<List<RoomInfo>>(){}.getType());//将获取的json转换为实体集合
+                    Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();//刷新完成提示
+                    houseListAdapter.setDatalist(roomInfoList,true);//设置适配器的数据
+                    recyclerView.refreshComplete(pageSize);//刷新完成
+                    lRecyclerViewAdapter.notifyDataSetChanged();//必须调用此方法
+                    page+=1;//增加页数
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(),"刷新失败",Toast.LENGTH_SHORT).show();//错误提示
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+
+    }
 }
+

@@ -44,7 +44,7 @@ public class RentFragment extends Fragment {
     private List<RoomInfo> roomInfoList;//房屋数据
     private HouseListAdapter houseListAdapter;//列表适配器
     private LRecyclerViewAdapter lRecyclerViewAdapter;//刷新适配器
-    private int page = 1;
+    private int page = 0;
     private int pageSize = 20;
 
     public RentFragment() {
@@ -105,7 +105,7 @@ public class RentFragment extends Fragment {
         recyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page = 1;//刷新时重置已加载的页数
+                page = 0;//刷新时重置已加载的页数
                 getListData();
             }
         });

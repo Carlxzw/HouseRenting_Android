@@ -18,6 +18,7 @@ import com.example.administer.houserenting_android.view.AddHouseActivity;
 import com.example.administer.houserenting_android.view.MineFragment;
 import com.example.administer.houserenting_android.view.RentFragment;
 import com.example.administer.houserenting_android.view.RequestFragment;
+import com.example.administer.houserenting_android.view.SearchActivity;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;//内容容器
@@ -70,10 +71,13 @@ public class MainActivity extends AppCompatActivity {
         searchBar = findViewById(R.id.search_bar);
         addButton = findViewById(R.id.add_button);
         initViewPager();
+
+
     }
 
     private void initListener(){
         addButton.setOnClickListener(onClickListener);
+        searchBar.setOnClickListener(onClickListener);
     }
     //监听初始化
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -87,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(),AddHouseActivity.class).putExtra("title","添加求租信息"));
                     }
 
+                    break;
+                case R.id.search_bar:
+                    startActivity(new Intent(getApplicationContext(),SearchActivity.class));
                     break;
             }
         }

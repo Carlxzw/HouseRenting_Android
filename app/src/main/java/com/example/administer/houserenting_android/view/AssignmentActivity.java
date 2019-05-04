@@ -51,43 +51,22 @@ public class AssignmentActivity extends AppCompatActivity {
             tab_assignment.addTab(tab);
         }
         lRecyclerView = findViewById(R.id.lv_assignment);
-        //添加空白view，避免与搜索栏重叠
-        View header = LayoutInflater.from(this).inflate(R.layout.empty_title_layout,null, false);
-        lRecyclerViewAdapter.addHeaderView(header);
+
         lRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         lRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
         appointmentListAdapter = new AppointmentListAdapter(getApplicationContext());
         appointmentListAdapter.setDatalist(appointmentInfos,false);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(appointmentListAdapter);
+        //添加空白view，避免与搜索栏重叠
+        View header = LayoutInflater.from(this).inflate(R.layout.empty_title_layout,null, false);
+        lRecyclerViewAdapter.addHeaderView(header);
         lRecyclerView.setAdapter(lRecyclerViewAdapter);
 
     }
 
     //初始化监听器
     private void initListener(){
-        tab_assignment.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()){
-                    case 0://选中出租列表
-                        appointmentListAdapter.setDatalist(appointmentInfos,false);
-                        break;
-                    case 1://选中求租列表
-                        appointmentListAdapter.setDatalist(appointmentInfos,false);
-                        break;
-                }
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
         //返回按钮监听
         ll_back_button.setOnClickListener(new View.OnClickListener() {

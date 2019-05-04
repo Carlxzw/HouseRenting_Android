@@ -8,9 +8,13 @@ import android.widget.TextView;
 
 import com.example.administer.houserenting_android.R;
 
+import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
+
 public class AddHouseActivity extends AppCompatActivity {
     private ViewGroup ll_back_button;
     private TextView title;//标题栏
+    private BGASortableNinePhotoLayout choosePhoto;
+    private ViewGroup addressLayout,choosePhotoLayput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,15 @@ public class AddHouseActivity extends AppCompatActivity {
         title =findViewById(R.id.tv_house_add_title);
         title.setText(getIntent().getStringExtra("title"));
         ll_back_button = findViewById(R.id.ll_back_button);
+        choosePhoto = findViewById(R.id.bg_add_house_photo);
+        choosePhotoLayput = findViewById(R.id.ll_add_house_photo);
+        addressLayout = findViewById(R.id.ll_add_house_address_input);
+        if (getIntent().getStringExtra("title").equals("添加求租信息")){
+            choosePhotoLayput.setVisibility(View.GONE);
+            addressLayout.setVisibility(View.GONE);
+        }
+
+
     }
 
     private  void initLinstener(){

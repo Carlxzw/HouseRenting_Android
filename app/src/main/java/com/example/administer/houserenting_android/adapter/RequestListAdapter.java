@@ -49,9 +49,9 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
         RoomInfo roomInfo = mDataList.get(i);
         houseListViewHolder.title.setText(roomInfo.getRoomTitle());
         houseListViewHolder.address.setText(roomInfo.getRoomAddress());
-        houseListViewHolder.type.setText(roomInfo.getRoomType());
-        houseListViewHolder.price.setText(roomInfo.getRoomPrice());
-        houseListViewHolder.area.setText(roomInfo.getRoomArea());
+        houseListViewHolder.type.setText("户型:"+roomInfo.getRoomType());
+        houseListViewHolder.price.setText("价格："+roomInfo.getRoomPrice());
+        houseListViewHolder.area.setText("面积："+roomInfo.getRoomArea());
 
     }
 

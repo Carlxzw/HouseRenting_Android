@@ -34,12 +34,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/ll_add_house_address_input"
             android:layout_margin="@dimen/dp_10"
             android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="小区名称"/>
+                android:text="小区地址"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_10"
+            android:visibility="gone"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -198,6 +200,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_10"
+        android:id="@+id/ll_add_house_photo"
         android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"

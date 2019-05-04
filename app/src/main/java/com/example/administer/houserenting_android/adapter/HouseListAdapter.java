@@ -51,7 +51,7 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.Hous
         houseListViewHolder.address.setText(roomInfo.getRoomAddress());
         houseListViewHolder.type.setText(roomInfo.getRoomType());
         houseListViewHolder.price.setText(roomInfo.getRoomPrice());
-        houseListViewHolder.area.setText(roomInfo.getRoomArea());
+        houseListViewHolder.area.setText("面积："+roomInfo.getRoomArea());
 
 
     }
