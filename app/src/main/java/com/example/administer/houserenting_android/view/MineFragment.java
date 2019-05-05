@@ -21,6 +21,10 @@ import com.example.administer.houserenting_android.model.UserInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import java.util.List;
+
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
+
 
 public class MineFragment extends Fragment {
     private RecyclerView functionList;//功能列表
@@ -128,6 +132,11 @@ public class MineFragment extends Fragment {
 //        }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshUserName();
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -146,6 +155,7 @@ public class MineFragment extends Fragment {
         super.onDetach();
 //        mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

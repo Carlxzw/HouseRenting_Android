@@ -56,9 +56,10 @@ public class AddHouseActivity extends AppCompatActivity implements EasyPermissio
     }
 
     private  void initLinstener(){
-        choosePhoto.setDelegate(this);
+
         ll_back_button.setOnClickListener(onClickListener);
         choosePhoto.setOnClickListener(onClickListener);
+        choosePhoto.setDelegate(this);
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
