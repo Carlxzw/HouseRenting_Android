@@ -154,11 +154,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_10"
+            android:visibility="gone"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -205,12 +207,33 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="房屋照片"/>
+            android:text="房屋封面"/>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:id="@+id/iv_house_add_cover"
+            android:background="@android:color/darker_gray"
+            android:src="@mipmap/ic_add"/>
         <cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
             android:id="@+id/bg_add_house_photo"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/dp_10"
+            android:visibility="gone"
             android:layout_height="wrap_content" />
     </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:id="@+id/ll_add_house_device"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="房屋设备"/>
+
+            <include layout="@layout/list_house_device_layout" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

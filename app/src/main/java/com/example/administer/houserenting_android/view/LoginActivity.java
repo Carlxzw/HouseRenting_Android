@@ -1,12 +1,14 @@
 package com.example.administer.houserenting_android.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administer.houserenting_android.R;
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private ViewGroup ll_back_button;
     private TextInputEditText usernameInput,pwdInput;
     private ViewGroup loginButton;
+    private TextView registerButton;
 
 
     @Override
@@ -43,11 +46,14 @@ public class LoginActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.tie_login_username);
         pwdInput = findViewById(R.id.tie_login_pwd);
         loginButton = findViewById(R.id.ll_login_btn);
+        registerButton = findViewById(R.id.tv_login_register);
+
     }
 
     private void initLinstener(){
         ll_back_button.setOnClickListener(onClickListener);
         loginButton.setOnClickListener(onClickListener);
+        registerButton.setOnClickListener(onClickListener);
     }
 
     View.OnClickListener onClickListener  = new View.OnClickListener() {
@@ -59,6 +65,9 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 case R.id.ll_login_btn:
                     login();
+                    break;
+                case R.id.tv_login_register:
+                    startActivity(new Intent(getApplicationContext(),RegisterActivity.class));
                     break;
             }
         }

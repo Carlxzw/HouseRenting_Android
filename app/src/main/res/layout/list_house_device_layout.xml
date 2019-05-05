@@ -16,8 +16,8 @@
             android:padding="@dimen/dp_10"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_bed"
                 android:src="@mipmap/ic_bed"/>
             <TextView
@@ -34,8 +34,8 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_washer"
                 android:src="@mipmap/ic_washer"/>
             <TextView
@@ -51,8 +51,8 @@
             android:padding="@dimen/dp_10"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_ac"
                 android:src="@mipmap/ic_ac"/>
             <TextView
@@ -69,8 +69,8 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_fridge"
                 android:src="@mipmap/ic_fridge"/>
             <TextView
@@ -91,8 +91,8 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_totle"
                 android:src="@mipmap/ic_totile"/>
             <TextView
@@ -109,8 +109,8 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_cook"
                 android:src="@mipmap/ic_cock"/>
             <TextView
@@ -126,8 +126,8 @@
             android:padding="@dimen/dp_10"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_tv"
                 android:src="@mipmap/ic_tv"/>
             <TextView
@@ -144,8 +144,8 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_waterheating"
                 android:src="@mipmap/ic_waterheating"/>
             <TextView
@@ -166,8 +166,8 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_wardrobe"
                 android:src="@mipmap/ic_wardrobe"/>
             <TextView
@@ -184,8 +184,8 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_heating"
                 android:src="@mipmap/ic_heating"/>
             <TextView
@@ -201,8 +201,8 @@
             android:padding="@dimen/dp_10"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_network"
                 android:src="@mipmap/ic_internet"/>
             <TextView
@@ -219,8 +219,8 @@
             android:padding="@dimen/dp_10"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/iv_house_device_sofa"
                 android:src="@mipmap/ic_sofa"/>
             <TextView

@@ -21,6 +21,8 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -68,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }else if (!pwd.equals(confirm)){
                     Toast.makeText(getApplicationContext(),"两次密码输入不一致",Toast.LENGTH_SHORT).show();
                 }else {
-
+                    register();
                 }
             }
         });
@@ -76,12 +78,23 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
+     * 生成userNo
+     * @return
+     */
+    public String getNo() {
+        String chars = "abcdefghijklmnopqrstuvwxyz";
+        SimpleDateFormat df = new SimpleDateFormat("yyMMddHHmmss");//�������ڸ�ʽ
+        String date = df.format(new Date());
+        char num =chars.charAt((int)(Math.random() * 26));
+        String no = date+num;
+        return no;
+    }
+    /**
      * 获取数据
      */
     private void register(){
-        String loginName = "";
-
-        String listUrl = URLConstrant.urlHead+"/userinfoController/regist?userNo="+loginName+"&loginPassword="+pwd;//请求地址
+        String loginName = getNo();
+        String listUrl = URLConstrant.urlHead+"/userinfoController/regist?userNo="+loginName+"&loginPassword="+pwd+"&phone="+phone+"&userType="+"0";//请求地址
         OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {

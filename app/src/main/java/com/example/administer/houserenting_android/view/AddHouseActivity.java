@@ -1,65 +1,160 @@
 package com.example.administer.houserenting_android.view;
 
 import android.Manifest;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administer.houserenting_android.R;
+import com.example.administer.houserenting_android.constrant.URLConstrant;
+import com.example.administer.houserenting_android.model.RoomDevice;
+import com.example.administer.houserenting_android.model.RoomInfo;
+import com.example.administer.houserenting_android.utils.CallBackUtil;
+import com.example.administer.houserenting_android.utils.OkhttpUtil;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
+import okhttp3.Call;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class AddHouseActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks,BGASortableNinePhotoLayout.Delegate  {
+public class AddHouseActivity extends AppCompatActivity {
     private ViewGroup ll_back_button;
     private TextView title;//标题栏
-    private BGASortableNinePhotoLayout choosePhoto;
-    private ViewGroup addressLayout,choosePhotoLayput;
-    private static final int PRC_PHOTO_PICKER = 1;
-    private static final int RC_CHOOSE_PHOTO = 1;
-    private static final int RC_PHOTO_PREVIEW = 2;
+    private ViewGroup addressLayout,choosePhotoLayput,deviceLayout,uploadButton;
+    private File tempFile;//临时文件
+    private Uri imageUri;
+    private String TAG = "AddHouseActivity";
+    private int[] deviceChosen = {0,0,0,0,0,0,0,0,0,0,0,0};//房屋设备选择情况
+    private static final String PHOTO_FILE_NAME = "roomCover.jpg";
+    private Button local_photo,camera_photo,cancle;
+    private PopupWindow popupWindow;
+    private static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
+    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
+    private static final int PHOTO_REQUEST_CUT = 3;// 结果
+    private ImageView roomCover;//房屋封面
+    private ImageView bed,washer,ac,fridge,totile,cook,tv,waterheating,wardrobe,heating,intentnet,sofa;//房屋设备图片
+    private  int checkColor   ;//设备选中的颜色
+    private  int uncheckColor ;//设备选中的颜色
+    private EditText titileInput,addressInput,areaInput,typeInput,priceInput;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_house);
-
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
         initView();
         initLinstener();
     }
 
+    /**
+     * 视图初始化
+     */
     private void initView(){
-        title =findViewById(R.id.tv_house_add_title);
+        checkColor   = getApplicationContext().getResources().getColor(R.color.colorAccent);//设备选中的颜色
+        uncheckColor = getApplicationContext().getResources().getColor(R.color.grey);//设备选中的颜色
+
+        title= findViewById(R.id.tv_house_add_title);
         title.setText(getIntent().getStringExtra("title"));
+
         ll_back_button = findViewById(R.id.ll_back_button);
-        choosePhoto = findViewById(R.id.bg_add_house_photo);
+        uploadButton = findViewById(R.id.ll_done_button);
+        deviceLayout = findViewById(R.id.ll_add_house_device);
+
+        titileInput = findViewById(R.id.et_add_house_title_input);
+        addressInput = findViewById(R.id.et_add_house_address_input);
+        areaInput = findViewById(R.id.et_add_house_area_input);
+        typeInput = findViewById(R.id.et_add_house_type_input);
+        priceInput = findViewById(R.id.et_add_house_rent_input);
+
+        roomCover = findViewById(R.id.iv_house_add_cover);
+
         choosePhotoLayput = findViewById(R.id.ll_add_house_photo);
         addressLayout = findViewById(R.id.ll_add_house_address_input);
+
         if (getIntent().getStringExtra("title").equals("添加求租信息")){
             choosePhotoLayput.setVisibility(View.GONE);
             addressLayout.setVisibility(View.GONE);
+            deviceLayout.setVisibility(View.GONE);
         }
 
+        bed = findViewById(R.id.iv_house_device_bed);
+        washer = findViewById(R.id.iv_house_device_washer);
+        ac  = findViewById(R.id.iv_house_device_ac);
+        fridge = findViewById(R.id.iv_house_device_fridge);
+        totile = findViewById(R.id.iv_house_device_totle);
+        cook = findViewById(R.id.iv_house_device_cook);
+        tv = findViewById(R.id.iv_house_device_tv);
+        waterheating = findViewById(R.id.iv_house_device_waterheating);
+        wardrobe = findViewById(R.id.iv_house_device_wardrobe);
+        heating = findViewById(R.id.iv_house_device_heating);
+        intentnet = findViewById(R.id.iv_house_device_network);
+        sofa = findViewById(R.id.iv_house_device_sofa);
 
     }
 
+    /**
+     * 点击事件监听
+     */
     private  void initLinstener(){
 
+        uploadButton.setOnClickListener(onClickListener);
         ll_back_button.setOnClickListener(onClickListener);
-        choosePhoto.setOnClickListener(onClickListener);
-        choosePhoto.setDelegate(this);
+        roomCover.setOnClickListener(onClickListener);
+        bed.setOnClickListener(onClickListener);
+        washer.setOnClickListener(onClickListener);
+        ac.setOnClickListener(onClickListener);
+        fridge .setOnClickListener(onClickListener);
+        totile.setOnClickListener(onClickListener);
+        cook.setOnClickListener(onClickListener);
+        tv .setOnClickListener(onClickListener);
+        waterheating .setOnClickListener(onClickListener);
+        wardrobe .setOnClickListener(onClickListener);
+        heating.setOnClickListener(onClickListener);
+        intentnet.setOnClickListener(onClickListener);
+        sofa.setOnClickListener(onClickListener);
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -69,85 +164,334 @@ public class AddHouseActivity extends AppCompatActivity implements EasyPermissio
                 case R.id.ll_back_button:
                     finish();
                     break;
-                case R.id.bg_add_house_photo:
-                    choicePhotoWrapper();
+                case R.id.iv_house_add_cover:
+                    showPopupWindow();
+                    break;
+                case R.id.iv_house_device_bed:
+                    bed.setColorFilter(deviceChosen[0]==0?checkColor:uncheckColor);
+                    deviceChosen[0]= deviceChosen[0]==0?1:0;
+                    break;
+                case R.id.iv_house_device_washer:
+                    washer.setColorFilter(deviceChosen[1]==0?checkColor:uncheckColor);
+                    deviceChosen[1]= deviceChosen[1]==0?1:0;
+                    break;
+                case R.id.iv_house_device_ac:
+                    ac.setColorFilter(deviceChosen[2]==0?checkColor:uncheckColor);
+                    deviceChosen[2]= deviceChosen[2]==0?1:0;
+                    break;
+                case R.id.iv_house_device_fridge:
+                    fridge.setColorFilter(deviceChosen[3]==0?checkColor:uncheckColor);
+                    deviceChosen[3]= deviceChosen[3]==0?1:0;
+                    break;
+                case R.id.iv_house_device_totle:
+                    totile.setColorFilter(deviceChosen[4]==0?checkColor:uncheckColor);
+                    deviceChosen[4]= deviceChosen[4]==0?1:0;
+                    break;
+                case R.id.iv_house_device_cook:
+                    cook.setColorFilter(deviceChosen[5]==0?checkColor:uncheckColor);
+                    deviceChosen[5]= deviceChosen[5]==0?1:0;
+                    break;
+                case R.id.iv_house_device_tv:
+                    tv.setColorFilter(deviceChosen[6]==0?checkColor:uncheckColor);
+                    deviceChosen[6]= deviceChosen[6]==0?1:0;
+                    break;
+                case R.id.iv_house_device_wardrobe:
+                    wardrobe.setColorFilter(deviceChosen[7]==0?checkColor:uncheckColor);
+                    deviceChosen[7]= deviceChosen[7]==0?1:0;
+                    break;
+                case R.id.iv_house_device_waterheating:
+                    waterheating.setColorFilter(deviceChosen[8]==0?checkColor:uncheckColor);
+                    deviceChosen[8]= deviceChosen[8]==0?1:0;
+                    break;
+                case R.id.iv_house_device_heating:
+                    heating.setColorFilter(deviceChosen[9]==0?checkColor:uncheckColor);
+                    deviceChosen[9]= deviceChosen[9]==0?1:0;
+                    break;
+                case R.id.iv_house_device_network:
+                    intentnet.setColorFilter(deviceChosen[10]==0?checkColor:uncheckColor);
+                    deviceChosen[10]= deviceChosen[10]==0?1:0;
+                    break;
+                case R.id.iv_house_device_sofa:
+                    sofa.setColorFilter(deviceChosen[11]==0?checkColor:uncheckColor);
+                    deviceChosen[11]= deviceChosen[11]==0?1:0;
+                    break;
+                case R.id.ll_done_button:
+                    if (isCompeleted()){
+                        addNewRoom();
+                    }else {
+                        Toast.makeText(getApplicationContext(),"请填写必要信息",Toast.LENGTH_SHORT).show();
+                    }
+
                     break;
             }
         }
     };
 
-    //选择图片
-    @AfterPermissionGranted(PRC_PHOTO_PICKER)
-    private void choicePhotoWrapper() {
-        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-        if (EasyPermissions.hasPermissions(this, perms)) {
-            // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
-            File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerTakePhoto");
 
-            Intent photoPickerIntent = new BGAPhotoPickerActivity.IntentBuilder(this)
-//                    .cameraFileDir(mTakePhotoCb.isChecked() ? takePhotoDir : null) // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话则不开启图库里的拍照功能
-                    .maxChooseCount(choosePhoto.getMaxItemCount() - choosePhoto.getItemCount()) // 图片选择张数的最大值
-                    .selectedPhotos(null) // 当前已选中的图片路径集合
-                    .pauseOnScroll(false) // 滚动列表时是否暂停加载图片
-                    .build();
-            startActivityForResult(photoPickerIntent, RC_CHOOSE_PHOTO);
+    /**
+     * 判断是否有SDCard
+     * @return
+     */
+    private boolean hasSdcard() {
+        //判断ＳＤ卡手否是安装好的　　　media_mounted
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            return true;
         } else {
-            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片\n\n2.拍照", PRC_PHOTO_PICKER, perms);
+            return false;
+        }
+    }
+    /**
+     * 剪切图片
+     */
+    private void crop(Uri uri) {
+        // 裁剪图片意图
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        // 裁剪框的比例，1：1
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // 裁剪后输出图片的尺寸大小
+        intent.putExtra("outputX", 500);
+        intent.putExtra("outputY", 500);
+
+        intent.putExtra("outputFormat", "JPEG");// 图片格式
+        intent.putExtra("noFaceDetection", true);// 取消人脸识别
+        intent.putExtra("return-data", true);
+        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
+        startActivityForResult(intent, PHOTO_REQUEST_CUT);
+    }
+
+    /**
+     * 返回的数据
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        Uri uri = null;
+        switch (requestCode) {
+            case PHOTO_REQUEST_CAREMA:
+                popupWindow.dismiss();
+
+                if (data!=null){
+                    uri = data.getData();
+                }else {
+                    uri = imageUri;
+                }
+                crop(uri);
+
+                break;
+            case PHOTO_REQUEST_GALLERY:
+                popupWindow.dismiss();
+                if (data == null) {
+                    Toast.makeText(getApplicationContext(), "数据为空", Toast.LENGTH_LONG).show();
+                }
+                else {
+
+                    uri = data.getData();
+                    crop(uri);
+
+                }
+                break;
+            case PHOTO_REQUEST_CUT:
+                if (data != null) {
+                    try{
+                        tempFile = new File(Environment.getExternalStorageDirectory(),PHOTO_FILE_NAME);
+                        if (tempFile.exists()){
+                            tempFile.delete();
+                            Log.d(TAG,"删除文件");
+                        }tempFile.createNewFile();
+                        Log.d(TAG,"创建文件");
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    Bitmap bitmap = data.getParcelableExtra("data");
+                    roomCover.setImageBitmap(bitmap);
+                    try {
+                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(tempFile));
+                        bitmap.compress(Bitmap.CompressFormat.JPEG,100,bos);
+                        bos.flush();
+                        bos.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(getApplicationContext(),"修改成功",Toast.LENGTH_SHORT).show();
+
+                }
+                break;
+
+
         }
     }
 
-    //返回选择的图片
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == RC_CHOOSE_PHOTO) {
-            List<String> selectedPhotos = BGAPhotoPickerActivity.getSelectedPhotos(data);
-        }
-    }
+    //显示选择相片的弹窗
+    @AfterPermissionGranted(PHOTO_REQUEST_CAREMA)
+    public void showPopupWindow(){
+        View view = View.inflate(this,R.layout.popup_window_layout,null);
+        local_photo = view.findViewById(R.id.btn_pop_album);
+        camera_photo = view.findViewById(R.id.btn_pop_camera);
+        cancle = view.findViewById(R.id.btn_pop_cancel);
 
-    @Override
-    public void onClickAddNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, ArrayList<String> models) {
+        //获取屏幕宽高
+        int weight = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels*1/3;
+        popupWindow = new PopupWindow(view,weight,height);
+//        popupWindow.setAnimationStyle(R.anim.push_up_in);
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
 
-    }
+        local_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent,PHOTO_REQUEST_GALLERY);
+                popupWindow.dismiss();
+            }
+        });
+        camera_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT>=23){
+                    int checkCallPhonePermission = ContextCompat.checkSelfPermission(AddHouseActivity.this, Manifest.permission.CAMERA);
+                    if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
+                        ActivityCompat.requestPermissions(AddHouseActivity.this,new String[]{Manifest.permission.CAMERA},222);
+                        return;
+                    }else {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (hasSdcard()){
+                            tempFile = new File(Environment.getExternalStorageDirectory(),PHOTO_FILE_NAME);
+                            Uri uri = Uri.fromFile(tempFile);
+                            SimpleDateFormat timeStampFormat = new SimpleDateFormat(
+                                    "yyyy_MM_dd_HH_mm_ss");
+                            String filename = timeStampFormat.format(new Date());
+                            ContentValues values = new ContentValues();
+                            values.put(MediaStore.Images.Media.TITLE,filename);
+                            imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
 
-    @Override
-    public void onClickDeleteNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+                        }
+                        startActivityForResult(intent,PHOTO_REQUEST_CAREMA);
+                        popupWindow.dismiss();
+                    }
+                }
 
-    }
 
-    @Override
-    public void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
+            }
+        });
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+            }
+        });
 
-    }
-
-    @Override
-    public void onNinePhotoItemExchanged(BGASortableNinePhotoLayout sortableNinePhotoLayout, int fromPosition, int toPosition, ArrayList<String> models) {
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp=getWindow().getAttributes();
+                lp.alpha =1.0f;
+                getWindow().setAttributes(lp);
+            }
+        });
+        WindowManager.LayoutParams lp=getWindow().getAttributes();
+        lp.alpha =0.5f;
+        getWindow().setAttributes(lp);
+        popupWindow.showAtLocation(view, Gravity.BOTTOM,0,0);
 
     }
 
     /**
-     * 权限申请的结果
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
+     * 获取新建信息
+     * @return
      */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    private RoomInfo getNewRoom(){
+        RoomInfo roomInfo = new RoomInfo();
+        roomInfo.setRoomNo(getNo());
+        roomInfo.setRoomTitle(titileInput.getText().toString());
+        roomInfo.setRoomAddress(addressInput.getText().toString());
+        roomInfo.setRoomArea(addressInput.getText().toString());
+        roomInfo.setRoomType(addressInput.getText().toString());
+        roomInfo.setRoomPrice(priceInput.getText().toString());
+        return roomInfo;
     }
 
-    @Override
-    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-
+    private RoomDevice getRoomDevice(){
+        RoomDevice roomDevice = new RoomDevice();
+        return roomDevice;
     }
 
+    /**
+     * 生成roomNo
+     * @return
+     */
+    public String getNo() {
+        String chars = "abc";
+        SimpleDateFormat df = new SimpleDateFormat("yyMMddHHmmss");//�������ڸ�ʽ
+        String date = df.format(new Date());
+        char num =chars.charAt((int)(Math.random() * 3));
+        String no = date+num;
+        return no;
+    }
 
-    //权限拒绝的情况
-    @Override
-    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        if (requestCode == PRC_PHOTO_PICKER) {
-            Toast.makeText(this, "您拒绝了「图片选择」所需要的相关权限!", Toast.LENGTH_SHORT).show();
+    /**
+     * 是否有未添加信息
+     * @return
+     */
+    private boolean isCompeleted(){
+        if(titileInput.getText().toString().equals("")||
+                addressInput.getText().toString().equals("")||
+                areaInput.getText().toString().equals("")||
+                typeInput.getText().toString().equals("")||
+                priceInput.getText().toString().equals("")){
+            return false;
+        }else {
+            return true;
         }
+
     }
+    /**
+     * 添加新出租信息
+     */
+    private void addNewRoom(){
+        String roomInfo = new Gson().toJson(getNewRoom());
+        String roomDevice = new Gson().toJson(getRoomDevice());
+        String listUrl = URLConstrant.urlHead+"roominfoController/insertroominfoFromJson?roominfojsonString="+roomInfo+"&roomdevicejsonString="+roomDevice;//请求地址
+        OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                //请求失败
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(String response) {
+                //请求成功
+                try {
+                    JSONObject jb = new JSONObject(response);//数据转换为jsonObject
+                    String code = jb.getString("status");
+                    //登录状态判断
+                    switch (code){
+                        case "500":
+                            Toast.makeText(getApplicationContext(),"登录失败，请检查用户名",Toast.LENGTH_SHORT).show();
+                            break;
+                        case "200":
+                            Toast.makeText(getApplicationContext(),"添加成功成功",Toast.LENGTH_SHORT).show();
+                            finish();
+                            break;
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+
+    }
+
 }
