@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.administer.houserenting_android.R;
 import com.example.administer.houserenting_android.model.RoomInfo;
+import com.example.administer.houserenting_android.model.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,11 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
         houseListViewHolder.type.setText("户型:"+roomInfo.getRoomType());
         houseListViewHolder.price.setText("价格："+roomInfo.getRoomPrice());
         houseListViewHolder.area.setText("面积："+roomInfo.getRoomArea());
+        UserInfo userInfo = roomInfo.getUserNo();
+        if (userInfo!=null){
+            houseListViewHolder.name.setText("联系人："+userInfo.getUserName());
+            houseListViewHolder.phone.setText("联系方式："+userInfo.getPhone());
+        }
 
     }
 
@@ -62,7 +68,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
     public class HouseListViewHolder extends RecyclerView.ViewHolder  {
 
-        private TextView title,type,area,price,address;
+        private TextView title,type,area,price,address,name,phone;
         public HouseListViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_house_title);
@@ -70,6 +76,8 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             area = itemView.findViewById(R.id.tv_house_area);
             price = itemView.findViewById(R.id.tv_house_price);
             address = itemView.findViewById(R.id.tv_house_address);
+            name = itemView.findViewById(R.id.tv_user_name);
+            phone = itemView.findViewById(R.id.tv_user_phone);
         }
     }
 }

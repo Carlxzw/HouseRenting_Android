@@ -59,7 +59,7 @@ public class MyRequestActivity extends AppCompatActivity {
         houseListAdapter.setDatalist(roomInfoList,true);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(houseListAdapter);
         lRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
+        lRecyclerView.setAdapter(lRecyclerViewAdapter);
         //添加空白view，避免与搜索栏重叠
         View header = LayoutInflater.from(getApplicationContext()).inflate(R.layout.empty_title_layout,null, false);
         lRecyclerViewAdapter.addHeaderView(header);
@@ -83,6 +83,13 @@ public class MyRequestActivity extends AppCompatActivity {
 
         //第一次加载
         getListData();//获取数据
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     /**
      * 获取数据

@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
      */
     private void register(){
         String loginName = getNo();
-        String listUrl = URLConstrant.urlHead+"/userinfoController/regist?userNo="+loginName+"&loginPassword="+pwd+"&phone="+phone+"&userType="+"0";//请求地址
+        String listUrl = URLConstrant.urlHead+"/userinfoController/regist?userNo="+loginName+"&loginPassword="+pwd+"&phone="+phone+"&userType="+"1";//请求地址
         OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
@@ -110,17 +110,14 @@ public class RegisterActivity extends AppCompatActivity {
                     String code = jb.getString("status");
                     //登录状态判断
                     switch (code){
-                        case "500":
-                            Toast.makeText(getApplicationContext(),"账号密码错误",Toast.LENGTH_SHORT).show();
-                            break;
-                        case "504":
-                            Toast.makeText(getApplicationContext(),"登录失败，请检查用户名",Toast.LENGTH_SHORT).show();
-                            break;
                         case "200":
                             //登录成功后保存用户信息
-                            Toast.makeText(getApplicationContext(),"登录成功",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"注册成功",Toast.LENGTH_SHORT).show();
                             finish();
                             break;
+                            default:
+                                Toast.makeText(getApplicationContext(),"注册失败",Toast.LENGTH_SHORT).show();
+                                break;
                     }
 
                 } catch (JSONException e) {

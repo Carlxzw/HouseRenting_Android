@@ -19,7 +19,8 @@ public class RoomInfo {
 
 	private String roomTitle;
 
-	private RoomDevice roomDevice;
+
+	private UserInfo userNo;
 
 
 	public String getRoomNo() {
@@ -94,11 +95,12 @@ public class RoomInfo {
 		this.roomTitle = roomTitle;
 	}
 
-	public RoomDevice getRoomDevice() {
-		return roomDevice;
+
+	public UserInfo getUserNo() {
+		return userNo;
 	}
 
-	public void setRoomDevice(RoomDevice roomDevice) {
-		this.roomDevice = roomDevice;
+	public void setUserNo(UserInfo userNo) {
+		this.userNo = userNo;
 	}
 }

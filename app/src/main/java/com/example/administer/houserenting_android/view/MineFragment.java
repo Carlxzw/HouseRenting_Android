@@ -99,8 +99,10 @@ public class MineFragment extends Fragment {
                         startActivity(new Intent(getContext(),AssignmentActivity.class));
                         break;
                     case 1:
+                        startActivity(new Intent(getContext(),MyHouseActivity.class));
                         break;
                     case 2:
+                        startActivity(new Intent(getContext(),MyRequestActivity.class));
                         break;
                 }
 

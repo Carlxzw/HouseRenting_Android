@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -33,9 +35,12 @@ import com.example.administer.houserenting_android.R;
 import com.example.administer.houserenting_android.constrant.URLConstrant;
 import com.example.administer.houserenting_android.model.RoomDevice;
 import com.example.administer.houserenting_android.model.RoomInfo;
+import com.example.administer.houserenting_android.model.UserInfo;
 import com.example.administer.houserenting_android.utils.CallBackUtil;
 import com.example.administer.houserenting_android.utils.OkhttpUtil;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,12 +52,19 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
+
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -75,6 +87,7 @@ public class AddHouseActivity extends AppCompatActivity {
     private  int checkColor   ;//设备选中的颜色
     private  int uncheckColor ;//设备选中的颜色
     private EditText titileInput,addressInput,areaInput,typeInput,priceInput;
+    private int addType = 0;//添加信息的类型，0为出租，1为求租
 
 
 
@@ -115,9 +128,12 @@ public class AddHouseActivity extends AppCompatActivity {
         addressLayout = findViewById(R.id.ll_add_house_address_input);
 
         if (getIntent().getStringExtra("title").equals("添加求租信息")){
+            addType = 1;
             choosePhotoLayput.setVisibility(View.GONE);
             addressLayout.setVisibility(View.GONE);
             deviceLayout.setVisibility(View.GONE);
+        }else {
+            addType = 0;
         }
 
         bed = findViewById(R.id.iv_house_device_bed);
@@ -217,7 +233,12 @@ public class AddHouseActivity extends AppCompatActivity {
                     break;
                 case R.id.ll_done_button:
                     if (isCompeleted()){
-                        addNewRoom();
+                        if(addType==0){
+                            addNewRoom();
+                        }else {
+                            addNewRequest();
+                        }
+
                     }else {
                         Toast.makeText(getApplicationContext(),"请填写必要信息",Toast.LENGTH_SHORT).show();
                     }
@@ -413,11 +434,24 @@ public class AddHouseActivity extends AppCompatActivity {
         roomInfo.setRoomNo(getNo());
         roomInfo.setRoomTitle(titileInput.getText().toString());
         roomInfo.setRoomAddress(addressInput.getText().toString());
-        roomInfo.setRoomArea(addressInput.getText().toString());
-        roomInfo.setRoomType(addressInput.getText().toString());
+        roomInfo.setRoomArea(areaInput.getText().toString());
+        roomInfo.setRoomType(typeInput.getText().toString());
         roomInfo.setRoomPrice(priceInput.getText().toString());
+        roomInfo.setRoomBackup("");
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        String userJson = sp.getString("userJson","");
+        UserInfo userInfo = new Gson().fromJson(userJson,UserInfo.class);
+        roomInfo.setUserNo(userInfo);
+        roomInfo.setRoomCover("");
+        if (addType==0){
+            roomInfo.setRoomState("-1");
+        }else {
+            roomInfo.setRoomState("100");
+        }
+
         return roomInfo;
     }
+
 
     private RoomDevice getRoomDevice(){
         RoomDevice roomDevice = new RoomDevice();
@@ -443,12 +477,14 @@ public class AddHouseActivity extends AppCompatActivity {
      */
     private boolean isCompeleted(){
         if(titileInput.getText().toString().equals("")||
-                addressInput.getText().toString().equals("")||
                 areaInput.getText().toString().equals("")||
                 typeInput.getText().toString().equals("")||
                 priceInput.getText().toString().equals("")){
             return false;
-        }else {
+        }else if (addType ==0&&addressInput.getText().toString().equals("")){
+            return false;
+        }
+        else {
             return true;
         }
 
@@ -491,7 +527,52 @@ public class AddHouseActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void addNewRequest(){
+        String roomInfo = new Gson().toJson(getNewRoom());
+        Map<String,String> paramsMap = new HashMap<>();
+        paramsMap.put("roominfojsonString",roomInfo);
+        paramsMap.put("roomdevicejsonString",null);
+//        String listUrl = URLConstrant.urlHead+"roominfoController/insertroominfoFromJson";//请求地址
+        String listUrl = URLConstrant.urlHead+"roominfoController/insertroominfoFromJson?roominfojsonString="+roomInfo;//请求地址
+//        String listUrl = URLConstrant.urlHead+"roominfoController/insertroominfoFromJson";//请求地址
+        OkhttpUtil.okHttpGet(listUrl,new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                //请求失败
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(String response) {
+                //请求成功
+                try {
+                    JSONObject jb = new JSONObject(response);//数据转换为jsonObject
+                    String code = jb.getString("status");
+                    //登录状态判断
+                    switch (code){
+                        case "500":
+                            Toast.makeText(getApplicationContext(),"登录失败，请检查用户名",Toast.LENGTH_SHORT).show();
+                            break;
+                        case "200":
+                            Toast.makeText(getApplicationContext(),"添加成功成功",Toast.LENGTH_SHORT).show();
+                            finish();
+                            break;
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+    }
+
+    private void uploadPicture(){
 
     }
+
+
 
 }

@@ -54,7 +54,7 @@ public class MyHouseActivity extends AppCompatActivity {
         backButton = findViewById(R.id.ll_back_button);
         lRecyclerView = findViewById(R.id.lv_myhouse_list);
         roomInfoList = new ArrayList<>();
-        houseListAdapter = new HouseListAdapter(getApplicationContext());
+        houseListAdapter = new HouseListAdapter(this);
         houseListAdapter.setDatalist(roomInfoList,true);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(houseListAdapter);
         lRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -69,7 +69,7 @@ public class MyHouseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        lRecyclerView.setAdapter(lRecyclerViewAdapter);
         //列表刷新操作
         lRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -81,6 +81,13 @@ public class MyHouseActivity extends AppCompatActivity {
 
         //第一次加载
         getListData();//获取数据
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     /**
      * 获取数据

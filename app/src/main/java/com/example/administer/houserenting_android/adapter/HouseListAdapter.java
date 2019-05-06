@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.administer.houserenting_android.R;
 import com.example.administer.houserenting_android.model.RoomInfo;
 
@@ -52,6 +53,16 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.Hous
         houseListViewHolder.type.setText(roomInfo.getRoomType());
         houseListViewHolder.price.setText(roomInfo.getRoomPrice());
         houseListViewHolder.area.setText("面积："+roomInfo.getRoomArea());
+        try {
+            if (roomInfo.getRoomCover()!=null&&roomInfo.getRoomCover()!=""){
+                Glide.with(context)
+                        .load(roomInfo.getRoomCover())
+                        .into(houseListViewHolder.cover);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }

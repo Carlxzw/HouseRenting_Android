@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dp_6"
         android:layout_marginRight="@dimen/dp_6"
-        android:id="@+id/lv_request_list" />
+        android:id="@+id/lv_request_list"
+        android:layout_marginBottom="@dimen/dp_40"/>
 
 </LinearLayout>
