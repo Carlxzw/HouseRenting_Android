@@ -74,7 +74,7 @@ public class AssignmentActivity extends AppCompatActivity {
         lRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         lRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
         appointmentListAdapter = new AppointmentListAdapter(getApplicationContext());
-        appointmentListAdapter.setDatalist(appointmentInfos,false);
+        appointmentListAdapter.setDatalist(appointmentInfos,false,state);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(appointmentListAdapter);
         //添加空白view，避免与搜索栏重叠
         View header = LayoutInflater.from(this).inflate(R.layout.empty_title_layout,null, false);
@@ -161,7 +161,7 @@ public class AssignmentActivity extends AppCompatActivity {
                     JSONObject jb = new JSONObject(response);//数据转换为jsonObject
                     String result = jb.getString("data");//获取返回的数据内容
                     appointmentInfos = new Gson().fromJson(result,new TypeToken<List<AppointmentInfo>>(){}.getType());//将获取的json转换为实体集合
-                    appointmentListAdapter.setDatalist(appointmentInfos,true);//设置适配器的数据
+                    appointmentListAdapter.setDatalist(appointmentInfos,true,state);//设置适配器的数据
                     lRecyclerView.refreshComplete(pageSize);//刷新完成
                     lRecyclerViewAdapter.notifyDataSetChanged();//必须调用此方法
 //                    page+=1;//增加页数

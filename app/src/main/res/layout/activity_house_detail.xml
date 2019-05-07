@@ -173,6 +173,13 @@
                        android:id="@+id/tv_house_detail_info"
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content" />
+                   <ImageView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:src="@mipmap/city_bg"
+                       android:scaleType="center"
+                       android:layout_marginTop="@dimen/dp_10"
+                       android:id="@+id/iv_house_detail_image"/>
                </LinearLayout>
 
                <LinearLayout
@@ -211,8 +218,8 @@
         android:id="@+id/ll_apointment_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/button_card_corners"
         android:elevation="2dp"
@@ -226,6 +233,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="预约看房"
+            android:textSize="@dimen/dp_18"
+            android:layout_margin="4dp"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

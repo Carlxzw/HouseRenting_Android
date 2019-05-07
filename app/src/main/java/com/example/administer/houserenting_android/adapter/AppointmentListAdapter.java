@@ -19,6 +19,7 @@ import java.util.List;
 public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentListAdapter.HouseListViewHolder> {
     private Context context;
     private List<AppointmentInfo> mDataList;
+    private int state;
 
     public AppointmentListAdapter(Context context){
         this.context = context;
@@ -31,10 +32,11 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
      * @param list
      * @param isRefresh 是否为刷新数据还是加载更多
      */
-    public void setDatalist(List<AppointmentInfo> list,boolean isRefresh){
+    public void setDatalist(List<AppointmentInfo> list,boolean isRefresh,int type){
         if (isRefresh){
             mDataList.clear();
         }
+        state = type;
         mDataList.addAll(list);
         notifyDataSetChanged();
     }
@@ -68,13 +70,23 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     @Override
     public void onBindViewHolder(@NonNull AppointmentListAdapter.HouseListViewHolder houseListViewHolder, int i) {
         AppointmentInfo appointmentInfo  = mDataList.get(i);
-        if (appointmentInfo.getAppointmenter()!=null){
-            houseListViewHolder.name.setText(appointmentInfo.getAppointmenter().getUserName());
-            houseListViewHolder.phone.setText(appointmentInfo.getAppointmenter().getPhone());
-        }
 
         houseListViewHolder.address.setText(appointmentInfo.getRoomNo().getRoomAddress());
         houseListViewHolder.time.setText(appointmentInfo.getAppointmentDate());
+        switch (state) {
+            case 0:
+                if (appointmentInfo.getAppointmenter()!=null){
+                    houseListViewHolder.name.setText(appointmentInfo.getSaler().getUserName());
+                    houseListViewHolder.phone.setText(appointmentInfo.getSaler().getPhone());
+                }
+                break;
+            case 1:
+                if (appointmentInfo.getAppointmenter()!=null){
+                    houseListViewHolder.name.setText(appointmentInfo.getAppointmenter().getUserName());
+                    houseListViewHolder.phone.setText(appointmentInfo.getAppointmenter().getPhone());
+                }
+                break;
+        }
         switch (appointmentInfo.getAppointmentState()){
             case "0":
                 houseListViewHolder.state.setText("预约成功");

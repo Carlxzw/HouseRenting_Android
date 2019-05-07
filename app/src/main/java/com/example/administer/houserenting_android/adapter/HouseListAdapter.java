@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administer.houserenting_android.R;
+import com.example.administer.houserenting_android.constrant.URLConstrant;
 import com.example.administer.houserenting_android.model.RoomInfo;
 
 import java.util.ArrayList;
@@ -55,16 +56,16 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.Hous
         houseListViewHolder.area.setText("面积："+roomInfo.getRoomArea());
         try {
             if (roomInfo.getRoomCover()!=null&&roomInfo.getRoomCover()!=""){
+                //封面加载
+                String coverUrl = URLConstrant.urlHead+"files/"+roomInfo.getRoomCover();
                 Glide.with(context)
-                        .load(roomInfo.getRoomCover())
+                        .load(coverUrl)
                         .into(houseListViewHolder.cover);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override

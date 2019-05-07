@@ -31,6 +31,7 @@ public class MineFragment extends Fragment {
     private MineFunctionAdapter mineFunctionAdapter;//功能列表适配器
     private TextView userName;//用户名
     private ImageView userIcon;//用户头像
+    private TextView logoutButton;
 
     public MineFragment() {
         // Required empty public constructor
@@ -65,6 +66,7 @@ public class MineFragment extends Fragment {
         userIcon = view.findViewById(R.id.iv_user_icon);
         userName = view.findViewById(R.id.tv_mine_user_name);
         mineFunctionAdapter = new MineFunctionAdapter(getContext());
+        logoutButton = view.findViewById(R.id.tv_mine_log_out);
         functionList.setLayoutManager(new LinearLayoutManager(getContext()));
         functionList.setAdapter(mineFunctionAdapter);
         // Inflate the layout for this fragment
@@ -108,6 +110,21 @@ public class MineFragment extends Fragment {
 
             }
         });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sp = getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+                String userJson = sp.getString("userJson","");
+                if (userJson!=""){
+                    if (userName!=null){
+                        userName.setText("请登录");
+                        sp.edit().clear();
+                        logoutButton.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
     }
 
     private void refreshUserName(){
@@ -118,8 +135,8 @@ public class MineFragment extends Fragment {
                 UserInfo userInfo = new Gson().fromJson(userJson,UserInfo.class);
                 if (userName!=null){
                     userName.setText(userInfo.getUserName()+"，欢迎您");
+                    logoutButton.setVisibility(View.VISIBLE);
                 }
-
             }
         } catch (JsonSyntaxException e) {
             e.printStackTrace();

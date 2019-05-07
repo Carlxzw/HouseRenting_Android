@@ -1,6 +1,7 @@
 package com.example.administer.houserenting_android.view;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -62,6 +63,7 @@ import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -83,11 +85,12 @@ public class AddHouseActivity extends AppCompatActivity {
     private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
     private static final int PHOTO_REQUEST_CUT = 3;// 结果
     private ImageView roomCover;//房屋封面
-    private ImageView bed,washer,ac,fridge,totile,cook,tv,waterheating,wardrobe,heating,intentnet,sofa;//房屋设备图片
+    private ImageView bed,washer,ac,fridge,totile,cook,tv,wardrobe,waterheating,heating,intentnet,sofa;//房屋设备图片
     private  int checkColor   ;//设备选中的颜色
     private  int uncheckColor ;//设备选中的颜色
     private EditText titileInput,addressInput,areaInput,typeInput,priceInput;
     private int addType = 0;//添加信息的类型，0为出租，1为求租
+    private ProgressDialog progressDialog;
 
 
 
@@ -455,6 +458,18 @@ public class AddHouseActivity extends AppCompatActivity {
 
     private RoomDevice getRoomDevice(){
         RoomDevice roomDevice = new RoomDevice();
+        roomDevice.setBed(String.valueOf(deviceChosen[0]));
+        roomDevice.setWasher(String.valueOf(deviceChosen[1]));
+        roomDevice.setConditioning(String.valueOf(deviceChosen[2]));
+        roomDevice.setFridge(String.valueOf(deviceChosen[3]));
+        roomDevice.setToilte(String.valueOf(deviceChosen[4]));
+        roomDevice.setCook(String.valueOf(deviceChosen[5]));
+        roomDevice.setTv(String.valueOf(deviceChosen[6]));
+        roomDevice.setWardrobe(String.valueOf(deviceChosen[7]));
+        roomDevice.setWaterheater(String.valueOf(deviceChosen[8]));
+        roomDevice.setWaterheater(String.valueOf(deviceChosen[9]));
+        roomDevice.setIntelnet(String.valueOf(deviceChosen[10]));
+        roomDevice.setSofa(String.valueOf(deviceChosen[11]));
         return roomDevice;
     }
 
@@ -493,13 +508,20 @@ public class AddHouseActivity extends AppCompatActivity {
      * 添加新出租信息
      */
     private void addNewRoom(){
-        String roomInfo = new Gson().toJson(getNewRoom());
+        progressDialog = new ProgressDialog(AddHouseActivity.this);
+        progressDialog.show();
+        final RoomInfo room = getNewRoom();
+        if (tempFile!=null){
+           room.setRoomCover(room.getRoomNo()+".jpg");
+        }
+        String roomInfo = new Gson().toJson(room);
         String roomDevice = new Gson().toJson(getRoomDevice());
         String listUrl = URLConstrant.urlHead+"roominfoController/insertroominfoFromJson?roominfojsonString="+roomInfo+"&roomdevicejsonString="+roomDevice;//请求地址
         OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 //请求失败
+                Toast.makeText(getApplicationContext(),"添加失败",Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
             @Override
@@ -511,15 +533,24 @@ public class AddHouseActivity extends AppCompatActivity {
                     //登录状态判断
                     switch (code){
                         case "500":
-                            Toast.makeText(getApplicationContext(),"登录失败，请检查用户名",Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"",Toast.LENGTH_SHORT).show();
                             break;
                         case "200":
-                            Toast.makeText(getApplicationContext(),"添加成功成功",Toast.LENGTH_SHORT).show();
-                            finish();
+                            if (tempFile!=null){
+                                uploadPicture(room.getRoomNo());
+                            }else {
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(),"添加成功",Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+//
                             break;
                     }
 
                 } catch (JSONException e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"添加失败",Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
 
@@ -529,7 +560,10 @@ public class AddHouseActivity extends AppCompatActivity {
 
     }
 
+
     private void addNewRequest(){
+        progressDialog = new ProgressDialog(AddHouseActivity.this);
+        progressDialog.show();
         String roomInfo = new Gson().toJson(getNewRoom());
         Map<String,String> paramsMap = new HashMap<>();
         paramsMap.put("roominfojsonString",roomInfo);
@@ -542,6 +576,7 @@ public class AddHouseActivity extends AppCompatActivity {
             public void onFailure(Call call, Exception e) {
                 //请求失败
                 e.printStackTrace();
+                Toast.makeText(getApplicationContext(),"添加失败",Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onResponse(String response) {
@@ -552,15 +587,19 @@ public class AddHouseActivity extends AppCompatActivity {
                     //登录状态判断
                     switch (code){
                         case "500":
+                            progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(),"登录失败，请检查用户名",Toast.LENGTH_SHORT).show();
                             break;
                         case "200":
-                            Toast.makeText(getApplicationContext(),"添加成功成功",Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"添加成功",Toast.LENGTH_SHORT).show();
                             finish();
                             break;
                     }
 
                 } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(),"添加失败",Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                     e.printStackTrace();
                 }
 
@@ -569,7 +608,57 @@ public class AddHouseActivity extends AppCompatActivity {
         });
     }
 
-    private void uploadPicture(){
+    private void uploadPicture(final String roomNo){
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                        try{
+                            String listUrl = URLConstrant.urlHead+"roominfoController/uploadPortrait";//请求地址
+                            okhttp3.OkHttpClient okHttpClient = new okhttp3.OkHttpClient();
+                            MultipartBody.Builder builder = new MultipartBody.Builder()
+                                    .setType(MultipartBody.FORM)
+                                    .addFormDataPart("fileToUpload",roomNo, okhttp3.RequestBody.create(okhttp3.MediaType.parse("image/*"),tempFile))
+                                    .addFormDataPart("roomNo",roomNo);
+                            okhttp3.RequestBody requestBody = builder.build();
+                            okhttp3.Request request = new okhttp3.Request.Builder().url(listUrl).post(requestBody).build();
+                            okhttp3.Call call = okHttpClient.newCall(request);
+                            call.enqueue(new okhttp3.Callback() {
+                                @Override
+                                public void onFailure(okhttp3.Call call,final IOException e) {
+                                    Log.d(TAG,e.getMessage().toString());
+                                    if(progressDialog!=null){
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(),"上传图片失败",Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                                    Log.d(TAG,response.toString());
+                                    if (progressDialog!=null){
+                                        progressDialog.dismiss();
+
+                                    }
+                                    Toast.makeText(getApplicationContext(),"添加成功",Toast.LENGTH_SHORT).show();
+                                    finish();
+
+                                }
+                            });
+                        }catch (Exception e){
+                            if (progressDialog!=null){
+                                progressDialog.dismiss();
+                            }
+                            Toast.makeText(getApplicationContext(),"添加失败",Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+
+            };
+            new Thread(){
+                public void run(){
+                    new Handler(Looper.getMainLooper()).post(runnable);
+                }
+            }.start();
 
     }
 
