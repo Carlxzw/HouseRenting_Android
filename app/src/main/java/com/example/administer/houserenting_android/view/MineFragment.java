@@ -114,12 +114,15 @@ public class MineFragment extends Fragment {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 SharedPreferences sp = getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
                 String userJson = sp.getString("userJson","");
                 if (userJson!=""){
                     if (userName!=null){
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.clear();
+                        editor.commit();
                         userName.setText("请登录");
-                        sp.edit().clear();
                         logoutButton.setVisibility(View.GONE);
                     }
                 }

@@ -1,47 +1,64 @@
 package com.example.administer.houserenting_android.model;
 
 public class JudgeInfo {
-	//���۱�
-	public String judegNo;
-	//���۱��
-	public RoomInfo roomNo;
-	//���ݱ��
-	public UserInfo userNo;
-	//�����û����
-	public String judeg;
-	//��������
-	public String judegState;
-	//����״̬
-	public String getJudegNo() {
-		return judegNo;
+	// ���۱�
+	private String judgeNo;
+	// ���۱��
+	private AppointmentInfo appointmentNo;
+	// ���ݱ��
+	private UserInfo userNo;
+	// �����û����
+	private String judge;
+	// ��������
+	private String judgeState;
+	// ����״̬
+	private String judgeDate;
+
+	public String getJudgeNo() {
+		return judgeNo;
 	}
-	public void setJudegNo(String judegNo) {
-		this.judegNo = judegNo;
+
+	public void setJudgeNo(String judgeNo) {
+		this.judgeNo = judgeNo;
 	}
-	public RoomInfo getRoomNo() {
-		return roomNo;
+
+	public AppointmentInfo getAppointmentNo() {
+		return appointmentNo;
 	}
-	public void setRoomNo(RoomInfo roomNo) {
-		this.roomNo = roomNo;
+
+	public void setAppointmentNo(AppointmentInfo appointmentNo) {
+		this.appointmentNo = appointmentNo;
 	}
+
 	public UserInfo getUserNo() {
 		return userNo;
 	}
+
 	public void setUserNo(UserInfo userNo) {
 		this.userNo = userNo;
 	}
-	public String getJudeg() {
-		return judeg;
-	}
-	public void setJudeg(String judeg) {
-		this.judeg = judeg;
-	}
-	public String getJudegState() {
-		return judegState;
-	}
-	public void setJudegState(String judegState) {
-		this.judegState = judegState;
-	}
-	
 
+	public String getJudge() {
+		return judge;
+	}
+
+	public void setJudge(String judge) {
+		this.judge = judge;
+	}
+
+	public String getJudgeState() {
+		return judgeState;
+	}
+
+	public void setJudgeState(String judgeState) {
+		this.judgeState = judgeState;
+	}
+
+	public String getJudgeDate() {
+		return judgeDate;
+	}
+
+	public void setJudgeDate(String judgeDate) {
+		this.judgeDate = judgeDate;
+	}
 }

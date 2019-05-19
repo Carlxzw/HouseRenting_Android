@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,12 +21,16 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     private Context context;
     private List<AppointmentInfo> mDataList;
     private int state;
+    private onButtonListener onButtonListener;
 
     public AppointmentListAdapter(Context context){
         this.context = context;
         mDataList = new ArrayList<>();
     }
 
+    public void setOnButtonListener(AppointmentListAdapter.onButtonListener onButtonListener) {
+        this.onButtonListener = onButtonListener;
+    }
 
     /**
      * 插入数据
@@ -69,7 +74,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
      */
     @Override
     public void onBindViewHolder(@NonNull AppointmentListAdapter.HouseListViewHolder houseListViewHolder, int i) {
-        AppointmentInfo appointmentInfo  = mDataList.get(i);
+        final AppointmentInfo appointmentInfo  = mDataList.get(i);
 
         houseListViewHolder.address.setText(appointmentInfo.getRoomNo().getRoomAddress());
         houseListViewHolder.time.setText(appointmentInfo.getAppointmentDate());
@@ -90,6 +95,8 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         switch (appointmentInfo.getAppointmentState()){
             case "0":
                 houseListViewHolder.state.setText("预约成功");
+                houseListViewHolder.comments.setVisibility(View.VISIBLE);
+                houseListViewHolder.contract.setVisibility(View.VISIBLE);
                 break;
             case "1":
                 houseListViewHolder.state.setText("已拒绝");
@@ -97,12 +104,30 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             case "-1":
                 houseListViewHolder.state.setText("已申请");
                 break;
-
         }
+
+        houseListViewHolder.comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onButtonListener!=null){
+                    onButtonListener.onAddComments(appointmentInfo);
+                }
+            }
+        });
+
+        houseListViewHolder.contract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onButtonListener!=null){
+                    onButtonListener.onAddContract(appointmentInfo);
+                }
+            }
+        });
 
 
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -113,6 +138,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     public class HouseListViewHolder extends RecyclerView.ViewHolder  {
 
         TextView name,state,time,phone,address;
+        Button comments,contract;
 
         public HouseListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -121,6 +147,14 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             time = itemView.findViewById(R.id.tv_appointment_time);
             phone = itemView.findViewById(R.id.tv_appointment_phone);
             address = itemView.findViewById(R.id.tv_appointment_address);
+            comments = itemView.findViewById(R.id.btn_add_comment);
+            contract  = itemView.findViewById(R.id.btn_add_contract);
         }
     }
+
+    public interface onButtonListener{
+        void onAddComments(AppointmentInfo appointmentInfo);
+        void onAddContract(AppointmentInfo appointmentInfo);
+    }
+
 }

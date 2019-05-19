@@ -2,14 +2,17 @@ package com.example.administer.houserenting_android.model;
 
 public class RoomPicture {
 	//������Ƭ��
-	public RoomInfo roomNo;
+	public String roomNo;
 	public String picture;
-	public RoomInfo getRoomNo() {
+
+	public String getRoomNo() {
 		return roomNo;
 	}
-	public void setRoomNo(RoomInfo roomNo) {
+
+	public void setRoomNo(String roomNo) {
 		this.roomNo = roomNo;
 	}
+
 	public String getPicture() {
 		return picture;
 	}

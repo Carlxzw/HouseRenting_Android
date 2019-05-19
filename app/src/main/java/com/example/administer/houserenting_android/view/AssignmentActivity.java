@@ -1,22 +1,29 @@
 package com.example.administer.houserenting_android.view;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.administer.houserenting_android.R;
 import com.example.administer.houserenting_android.adapter.AppointmentListAdapter;
 import com.example.administer.houserenting_android.constrant.URLConstrant;
 import com.example.administer.houserenting_android.model.AppointmentInfo;
+import com.example.administer.houserenting_android.model.JudgeInfo;
 import com.example.administer.houserenting_android.model.RoomInfo;
 import com.example.administer.houserenting_android.model.UserInfo;
 import com.example.administer.houserenting_android.utils.CallBackUtil;
@@ -30,12 +37,15 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
 
 public class AssignmentActivity extends AppCompatActivity {
+    private static final String TAG = "";
     private TabLayout tab_assignment;//分类标签栏
     //标签名
     private String[] tabName = {
@@ -49,6 +59,8 @@ public class AssignmentActivity extends AppCompatActivity {
     private ViewGroup ll_back_button;//退出按钮
     private int page = 0;
     private int pageSize = 20;
+    private ViewGroup actionBar;//两个按钮
+    private Button addComments,addContract;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +146,18 @@ public class AssignmentActivity extends AppCompatActivity {
                 getListData();
             }
         });
+
+        appointmentListAdapter.setOnButtonListener(new AppointmentListAdapter.onButtonListener() {
+            @Override
+            public void onAddComments(AppointmentInfo appointmentInfo) {
+                showCustomizeDialog(appointmentInfo);
+            }
+
+            @Override
+            public void onAddContract(AppointmentInfo appointmentInfo) {
+
+            }
+        });
     }
 
     /**
@@ -177,5 +201,108 @@ public class AssignmentActivity extends AppCompatActivity {
 
     }
 
+    private void showCustomizeDialog(final AppointmentInfo appointmentInfo) {
+        /* @setView 装入自定义View ==> R.layout.dialog_custom_layout
+         * dialog_custom_layout.xml可自定义更复杂的View
+         */
+        AlertDialog.Builder customizeDialog =
+                new AlertDialog.Builder(AssignmentActivity.this);
+        final View dialogView = LayoutInflater.from(AssignmentActivity.this)
+                .inflate(R.layout.dialog_custom_layout,null);
+        customizeDialog.setTitle("请填写评价");
+        customizeDialog.setView(dialogView);
+        customizeDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 获取EditView中的输入内容
+                        EditText edit_text =
+                                (EditText) dialogView.findViewById(R.id.edit_text);
+                        addNewComments(appointmentInfo,edit_text.getText().toString());
+                    }
+                });
+        customizeDialog.show();
+    }
 
+    /**
+     * 获取新添加的评论
+     * @param appointmentInfo
+     * @param comments
+     * @return
+     */
+    private JudgeInfo getNewComments(AppointmentInfo appointmentInfo,String comments){
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        String userJson = sp.getString("userJson","");
+        UserInfo userInfo = new Gson().fromJson(userJson,UserInfo.class);
+        JudgeInfo judgeInfo = new JudgeInfo();
+        judgeInfo.setUserNo(userInfo);
+        judgeInfo.setAppointmentNo(appointmentInfo);
+        judgeInfo.setJudge(comments);
+        judgeInfo.setJudgeNo(getNo());
+        return judgeInfo;
+    }
+
+    /**
+     * 生成judgeInfo
+     * @return
+     */
+    public String getNo() {
+        String chars = "abcde";
+        SimpleDateFormat df = new SimpleDateFormat("yyMMddHHmmss");//�������ڸ�ʽ
+        String date = df.format(new Date());
+        char num =chars.charAt((int)(Math.random() * 5));
+        String no = date+num;
+        return no;
+    }
+
+    /**
+     * 添加新出租信息
+     */
+    private void addNewComments(AppointmentInfo appointmentInfo,String comments){
+        final ProgressDialog progressDialog = new ProgressDialog(AssignmentActivity.this);
+        progressDialog.show();
+        final JudgeInfo judgeInfo = getNewComments(appointmentInfo,comments);
+        String judgeInfoJson = new Gson().toJson(judgeInfo);
+
+        String listUrl = URLConstrant.urlHead+"judgeinfoCotroller/insertJudegJson?judgeinfoJson="+judgeInfoJson;//请求地址
+        Log.d(TAG, "addNewComments: "+listUrl);
+        OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                //请求失败
+                Toast.makeText(getApplicationContext(),"添加失败",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(String response) {
+                //请求成功
+                try {
+                    JSONObject jb = new JSONObject(response);//数据转换为jsonObject
+                    String code = jb.getString("status");
+                    //登录状态判断
+                    switch (code){
+                        case "500":
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"添加失败",Toast.LENGTH_SHORT).show();
+                            break;
+                        case "200":
+
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"添加成功",Toast.LENGTH_SHORT).show();
+
+//
+                            break;
+                    }
+
+                } catch (JSONException e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"添加失败",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+    }
 }

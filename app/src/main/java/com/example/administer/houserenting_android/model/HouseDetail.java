@@ -6,7 +6,7 @@ public class HouseDetail {
 
     private RoomDevice device;
     private RoomInfo room;
-    private UserInfo userNo;
+//    private UserInfo userNo;
     private List<RoomPicture> picture;
 
     public RoomDevice getDevice() {
@@ -25,13 +25,13 @@ public class HouseDetail {
         this.room = room;
     }
 
-    public UserInfo getUserNo() {
-        return userNo;
-    }
-
-    public void setUserNo(UserInfo userNo) {
-        this.userNo = userNo;
-    }
+//    public UserInfo getUserNo() {
+//        return userNo;
+//    }
+//
+//    public void setUserNo(UserInfo userNo) {
+//        this.userNo = userNo;
+//    }
 
     public List<RoomPicture> getPicture() {
         return picture;

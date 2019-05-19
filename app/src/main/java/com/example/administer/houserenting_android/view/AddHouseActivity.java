@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,9 +89,10 @@ public class AddHouseActivity extends AppCompatActivity {
     private ImageView bed,washer,ac,fridge,totile,cook,tv,wardrobe,waterheating,heating,intentnet,sofa;//房屋设备图片
     private  int checkColor   ;//设备选中的颜色
     private  int uncheckColor ;//设备选中的颜色
-    private EditText titileInput,addressInput,areaInput,typeInput,priceInput;
+    private EditText titileInput,addressInput,areaInput,priceInput;
     private int addType = 0;//添加信息的类型，0为出租，1为求租
     private ProgressDialog progressDialog;
+    private Spinner houseType,rentType;
 
 
 
@@ -122,8 +124,10 @@ public class AddHouseActivity extends AppCompatActivity {
         titileInput = findViewById(R.id.et_add_house_title_input);
         addressInput = findViewById(R.id.et_add_house_address_input);
         areaInput = findViewById(R.id.et_add_house_area_input);
-        typeInput = findViewById(R.id.et_add_house_type_input);
         priceInput = findViewById(R.id.et_add_house_rent_input);
+
+        houseType = findViewById(R.id.sp_add_house_type_input);
+        rentType = findViewById(R.id.sp_add_house_rent_type_input);
 
         roomCover = findViewById(R.id.iv_house_add_cover);
 
@@ -438,14 +442,15 @@ public class AddHouseActivity extends AppCompatActivity {
         roomInfo.setRoomTitle(titileInput.getText().toString());
         roomInfo.setRoomAddress(addressInput.getText().toString());
         roomInfo.setRoomArea(areaInput.getText().toString());
-        roomInfo.setRoomType(typeInput.getText().toString());
+        roomInfo.setRoomType(houseType.getSelectedItem().toString());
+        roomInfo.setRoomKind(rentType.getSelectedItem().toString());
         roomInfo.setRoomPrice(priceInput.getText().toString());
         roomInfo.setRoomBackup("");
         SharedPreferences sp = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         String userJson = sp.getString("userJson","");
         UserInfo userInfo = new Gson().fromJson(userJson,UserInfo.class);
         roomInfo.setUserNo(userInfo);
-        roomInfo.setRoomCover("");
+//        roomInfo.setRoomCover("");
         if (addType==0){
             roomInfo.setRoomState("-1");
         }else {
@@ -493,7 +498,6 @@ public class AddHouseActivity extends AppCompatActivity {
     private boolean isCompeleted(){
         if(titileInput.getText().toString().equals("")||
                 areaInput.getText().toString().equals("")||
-                typeInput.getText().toString().equals("")||
                 priceInput.getText().toString().equals("")){
             return false;
         }else if (addType ==0&&addressInput.getText().toString().equals("")){
@@ -511,9 +515,9 @@ public class AddHouseActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(AddHouseActivity.this);
         progressDialog.show();
         final RoomInfo room = getNewRoom();
-        if (tempFile!=null){
-           room.setRoomCover(room.getRoomNo()+".jpg");
-        }
+//        if (tempFile!=null){
+//           room.setRoomCover(room.getRoomNo()+".jpg");
+//        }
         String roomInfo = new Gson().toJson(room);
         String roomDevice = new Gson().toJson(getRoomDevice());
         String listUrl = URLConstrant.urlHead+"roominfoController/insertroominfoFromJson?roominfojsonString="+roomInfo+"&roomdevicejsonString="+roomDevice;//请求地址

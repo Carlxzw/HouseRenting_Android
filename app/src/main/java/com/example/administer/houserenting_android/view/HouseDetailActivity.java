@@ -7,6 +7,10 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,9 +19,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administer.houserenting_android.R;
+import com.example.administer.houserenting_android.adapter.JudgeInfoAdapter;
 import com.example.administer.houserenting_android.constrant.URLConstrant;
 import com.example.administer.houserenting_android.model.AppointmentInfo;
 import com.example.administer.houserenting_android.model.HouseDetail;
+import com.example.administer.houserenting_android.model.JudgeInfo;
 import com.example.administer.houserenting_android.model.RoomDevice;
 import com.example.administer.houserenting_android.model.RoomInfo;
 import com.example.administer.houserenting_android.model.UserInfo;
@@ -47,6 +53,9 @@ public class HouseDetailActivity extends AppCompatActivity {
     private  int checkColor   ;//设备选中的颜色
     private  int uncheckColor ;//设备选中的颜色
     private ViewGroup appointBtn;
+    private List<JudgeInfo> judgeInfoList;//评价数据列表
+    private RecyclerView judgeList;//评价列表
+    private JudgeInfoAdapter judgeInfoAdapter;//评价列表适配器
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +65,7 @@ public class HouseDetailActivity extends AppCompatActivity {
         initLinstener();
         initData();
         getDetailData();
+        getJudgeList();
     }
 
     private void  initView(){
@@ -68,6 +78,12 @@ public class HouseDetailActivity extends AppCompatActivity {
         image = findViewById(R.id.iv_house_detail_image);
         info = findViewById(R.id.tv_house_detail_info);
         appointBtn = findViewById(R.id.ll_apointment_btn);
+        judgeList = findViewById(R.id.rv_house_detail_evaluate);
+        judgeInfoAdapter = new JudgeInfoAdapter(getApplicationContext());
+        judgeList.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
+        judgeList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        judgeList.setAdapter(judgeInfoAdapter);
+
 
         checkColor   = getApplicationContext().getResources().getColor(R.color.colorAccent);//设备选中的颜色
         uncheckColor = getApplicationContext().getResources().getColor(R.color.grey);//设备选中的颜色
@@ -126,6 +142,7 @@ public class HouseDetailActivity extends AppCompatActivity {
     private void getDetailData(){
 
         String listUrl = URLConstrant.urlHead+"roominfoController/queryroominfo/"+roomInfo.getRoomNo();//请求地址
+        Log.e("houseDetail:",listUrl);
         OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
@@ -140,13 +157,16 @@ public class HouseDetailActivity extends AppCompatActivity {
                     String result = jb.getString("data");//获取返回的数据内容
                     houseDetail  = new Gson().fromJson(result,HouseDetail.class);
                     refreshRoomDevice(houseDetail.getDevice());
-                    if (houseDetail.getRoom().getRoomCover()!=null){
-                        if (!houseDetail.getRoom().getRoomCover().equals("")){
+                    if (houseDetail.getPicture().size()>0&&houseDetail.getPicture().get(0)!=null){
+                        if (!houseDetail.getPicture().get(0).getPicture().equals("")){
                             //封面加载
-                            String coverUrl = URLConstrant.urlHead+"files/"+houseDetail.getRoom().getRoomCover();
+                            String coverUrl = URLConstrant.urlHead+"files/"+houseDetail.getPicture().get(0).getPicture();
                             Glide.with(getApplicationContext())
                                     .load(coverUrl)
                                     .into(cover);
+                            Glide.with(getApplicationContext())
+                                    .load(coverUrl)
+                                    .into(image);
                         }
                     }
 
@@ -279,5 +299,38 @@ public class HouseDetailActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    /**
+     * 获取评价数据数据
+     */
+    private void getJudgeList(){
+
+        String listUrl = URLConstrant.urlHead+"judgeinfoCotroller/queryroomJudgeList/"+roomInfo.getRoomNo()+"?start=0&num=20";//请求地址
+        Log.e("houseDetail:",listUrl);
+        OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                //请求失败
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(String response) {
+                //请求成功
+                try {
+                    JSONObject jb = new JSONObject(response);//数据转换为jsonObject
+                    String result = jb.getString("data");//获取返回的数据内容
+                   List<JudgeInfo> judgeInfoList = new Gson().fromJson(result,new TypeToken<List<JudgeInfo>>(){}.getType());
+                   if (judgeInfoAdapter!=null){
+                       judgeInfoAdapter.setDataList(judgeInfoList,true);
+                   }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(),"刷新失败",Toast.LENGTH_SHORT).show();//错误提示
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
     }
 }

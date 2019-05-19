@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,8 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class RentFragment extends Fragment {
 
@@ -160,6 +163,7 @@ public class RentFragment extends Fragment {
      */
     private void getListData(){
         String listUrl = URLConstrant.urlHead+"roominfoController/queryroominfoList?start="+page+"&num="+pageSize;//请求地址
+        Log.d(TAG, "getListData: "+listUrl);
         OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {

@@ -20,4 +20,24 @@
         completions."
     </string>
 
+    <string-array name="rent_type">
+        <item>整租</item>
+        <item>合租</item>
+        <item>别墅</item>
+        <item>套房 </item>
+    </string-array>
+
+    <string-array name="house_type">
+        <item>一室一厅一卫</item>
+        <item>一室一厅两卫</item>
+        <item>两室一厅一卫</item>
+        <item>两室一厅两卫 </item>
+        <item>两室两厅一卫</item>
+        <item>两室两厅两卫</item>
+        <item>三室一厅一卫</item>
+        <item>三室一厅两卫 </item>
+        <item>三室两厅一卫</item>
+        <item>三室两厅两卫</item>
+        <item>其他</item>
+    </string-array>
 </resources>

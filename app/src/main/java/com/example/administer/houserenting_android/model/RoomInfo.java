@@ -5,7 +5,7 @@ public class RoomInfo {
 
 	private String roomAddress;
 
-	private String roomCover;
+	private String roomKind;
 
 	private String roomArea;
 
@@ -39,12 +39,12 @@ public class RoomInfo {
 		this.roomAddress = roomAddress;
 	}
 
-	public String getRoomCover() {
-		return roomCover;
+	public String getRoomKind() {
+		return roomKind;
 	}
 
-	public void setRoomCover(String roomCover) {
-		this.roomCover = roomCover;
+	public void setRoomKind(String roomKind) {
+		this.roomKind = roomKind;
 	}
 
 	public String getRoomArea() {
