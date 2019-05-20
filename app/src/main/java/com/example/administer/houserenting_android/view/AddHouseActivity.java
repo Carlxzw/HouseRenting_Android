@@ -458,7 +458,7 @@ public class AddHouseActivity extends AppCompatActivity {
         }else {
             RoomPicture roomPicture = new RoomPicture();
             roomPicture.setRoomNo(roomNo);
-            roomPicture.setPicture("无");
+            roomPicture.setPicture("无   ");
             roomInfo.setRoomState("100");
         }
 
@@ -642,14 +642,20 @@ public class AddHouseActivity extends AppCompatActivity {
                                 }
 
                                 @Override
-                                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                                    Log.d(TAG,response.toString());
-                                    if (progressDialog!=null){
-                                        progressDialog.dismiss();
+                                public void onResponse(okhttp3.Call call, final okhttp3.Response response) throws IOException {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.d(TAG,response.toString());
+                                            if (progressDialog!=null){
+                                                progressDialog.dismiss();
 
-                                    }
-                                    Toast.makeText(getApplicationContext(),"添加成功",Toast.LENGTH_SHORT).show();
-                                    finish();
+                                            }
+                                            Toast.makeText(getApplicationContext(),"添加成功",Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }
+                                    });
+
 
                                 }
                             });

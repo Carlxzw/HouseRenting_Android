@@ -100,9 +100,11 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                 break;
             case "1":
                 houseListViewHolder.state.setText("已拒绝");
+
                 break;
             case "-1":
                 houseListViewHolder.state.setText("已申请");
+                houseListViewHolder.appointmentAction.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -139,6 +141,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
 
         TextView name,state,time,phone,address;
         Button comments,contract;
+        ViewGroup appointmentAction;
 
         public HouseListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -149,6 +152,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             address = itemView.findViewById(R.id.tv_appointment_address);
             comments = itemView.findViewById(R.id.btn_add_comment);
             contract  = itemView.findViewById(R.id.btn_add_contract);
+            appointmentAction = itemView.findViewById(R.id.ll_appoinment_action);
         }
     }
 

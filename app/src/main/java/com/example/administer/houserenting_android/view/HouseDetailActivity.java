@@ -160,7 +160,7 @@ public class HouseDetailActivity extends AppCompatActivity {
                     if (houseDetail.getPicture().size()>0&&houseDetail.getPicture().get(0)!=null){
                         if (!houseDetail.getPicture().get(0).getPicture().equals("")){
                             //封面加载
-                            String coverUrl = URLConstrant.urlHead+"files/"+houseDetail.getPicture().get(0).getPicture();
+                            String coverUrl = URLConstrant.url+"files/"+houseDetail.getPicture().get(0).getPicture();
                             Glide.with(getApplicationContext())
                                     .load(coverUrl)
                                     .into(cover);
