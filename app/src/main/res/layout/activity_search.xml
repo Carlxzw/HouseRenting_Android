@@ -47,6 +47,13 @@
             android:layout_weight="1"
             android:background="@drawable/search_card_corners" />
 
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/sp_search_cate"
+            android:entries="@array/seartch_cate"></Spinner>
+
         <LinearLayout
             android:id="@+id/ll_search_button"
             android:layout_width="wrap_content"

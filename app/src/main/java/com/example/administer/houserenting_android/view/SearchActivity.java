@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -166,6 +167,7 @@ public class SearchActivity extends AppCompatActivity {
     private void getListData(){
         String keyword = keywordInput.getText().toString();
         String listUrl = URLConstrant.urlHead+"roominfoController/search/"+keyword+"/"+roomState+"?start="+page+"&num="+pageSize;//请求地址
+        Log.d("", "getListData: "+listUrl);
         OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {

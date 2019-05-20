@@ -37,6 +37,7 @@ import com.example.administer.houserenting_android.R;
 import com.example.administer.houserenting_android.constrant.URLConstrant;
 import com.example.administer.houserenting_android.model.RoomDevice;
 import com.example.administer.houserenting_android.model.RoomInfo;
+import com.example.administer.houserenting_android.model.RoomPicture;
 import com.example.administer.houserenting_android.model.UserInfo;
 import com.example.administer.houserenting_android.utils.CallBackUtil;
 import com.example.administer.houserenting_android.utils.OkhttpUtil;
@@ -438,7 +439,8 @@ public class AddHouseActivity extends AppCompatActivity {
      */
     private RoomInfo getNewRoom(){
         RoomInfo roomInfo = new RoomInfo();
-        roomInfo.setRoomNo(getNo());
+        String roomNo = getNo();
+        roomInfo.setRoomNo(roomNo);
         roomInfo.setRoomTitle(titileInput.getText().toString());
         roomInfo.setRoomAddress(addressInput.getText().toString());
         roomInfo.setRoomArea(areaInput.getText().toString());
@@ -454,6 +456,9 @@ public class AddHouseActivity extends AppCompatActivity {
         if (addType==0){
             roomInfo.setRoomState("-1");
         }else {
+            RoomPicture roomPicture = new RoomPicture();
+            roomPicture.setRoomNo(roomNo);
+            roomPicture.setPicture("无");
             roomInfo.setRoomState("100");
         }
 

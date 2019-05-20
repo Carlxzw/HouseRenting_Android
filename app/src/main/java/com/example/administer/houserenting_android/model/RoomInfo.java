@@ -22,6 +22,15 @@ public class RoomInfo {
 
 	private UserInfo userNo;
 
+	private RoomPicture roompicture;
+
+	public RoomPicture getRoompicture() {
+		return roompicture;
+	}
+
+	public void setRoompicture(RoomPicture roompicture) {
+		this.roompicture = roompicture;
+	}
 
 	public String getRoomNo() {
 		return roomNo;

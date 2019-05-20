@@ -3,6 +3,7 @@ package com.example.administer.houserenting_android.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,18 +55,19 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.Hous
         houseListViewHolder.type.setText(roomInfo.getRoomType());
         houseListViewHolder.price.setText(roomInfo.getRoomPrice());
         houseListViewHolder.area.setText("面积："+roomInfo.getRoomArea());
-//        try {
-//            if (roomInfo.getRoomCover()!=null&&roomInfo.getRoomCover()!=""){
-//                //封面加载
-//                String coverUrl = URLConstrant.urlHead+"files/"+roomInfo.getRoomCover();
-//                Glide.with(context)
-//                        .load(coverUrl)
-//                        .into(houseListViewHolder.cover);
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            if (roomInfo.getRoompicture()!=null&&!roomInfo.getRoompicture().getPicture().equals("")){
+                //封面加载
+                String coverUrl = URLConstrant.urlHead+"files/"+roomInfo.getRoompicture().getPicture();
+                Log.d("图片地址", "onBindViewHolder: "+coverUrl);
+                Glide.with(context)
+                        .load(coverUrl)
+                        .into(houseListViewHolder.cover);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

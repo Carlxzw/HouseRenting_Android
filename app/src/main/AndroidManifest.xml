@@ -32,7 +32,6 @@
         <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.AddHouseActivity" />
         <activity android:name=".view.AssignmentActivity" />
-        <activity android:name=".view.MyRoomActivity" />
         <activity android:name=".view.SearchActivity" />
         <activity android:name=".view.RegisterActivity" />
         <activity android:name=".view.MyHouseActivity" />

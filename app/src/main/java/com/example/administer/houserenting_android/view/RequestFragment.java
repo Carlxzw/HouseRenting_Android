@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,6 +151,7 @@ public class RequestFragment extends Fragment {
      */
     private void getListData(){
         String listUrl = URLConstrant.urlHead+"roominfoController/queryallrentapp/100?start="+page+"&num="+pageSize;//请求地址
+        Log.d("", "getListData: "+listUrl);
         OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
