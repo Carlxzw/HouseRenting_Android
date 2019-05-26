@@ -41,7 +41,7 @@ public class RequestFragment extends Fragment {
     private List<RoomInfo> roomInfoList;//房屋数据
     private RequestListAdapter houseListAdapter;//列表适配器
     private LRecyclerViewAdapter lRecyclerViewAdapter;//刷新适配器
-    private int pageSize = 20;
+    private int pageSize = 100;
 
 //    private OnFragmentInteractionListener mListener;
 

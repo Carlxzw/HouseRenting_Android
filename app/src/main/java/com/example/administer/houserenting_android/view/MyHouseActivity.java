@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ public class MyHouseActivity extends AppCompatActivity {
     private LRecyclerViewAdapter lRecyclerViewAdapter;//刷新适配器
     private int page = 0;
     private int pageSize = 20;
+    private String TAG="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +111,7 @@ public class MyHouseActivity extends AppCompatActivity {
             return;
         }
         String listUrl = URLConstrant.urlHead+"roominfoController/queryuserapp/"+userInfo.getUserNo()+"?start="+page+"&num="+pageSize;//请求地址
+        Log.d(TAG, "getListData: "+listUrl);
         OkhttpUtil.okHttpGet(listUrl, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {

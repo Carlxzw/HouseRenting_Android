@@ -458,7 +458,7 @@ public class AddHouseActivity extends AppCompatActivity {
         }else {
             RoomPicture roomPicture = new RoomPicture();
             roomPicture.setRoomNo(roomNo);
-            roomPicture.setPicture("无   ");
+            roomPicture.setPicture("无");
             roomInfo.setRoomState("100");
         }
 

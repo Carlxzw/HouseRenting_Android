@@ -48,7 +48,7 @@ public class RentFragment extends Fragment {
     private HouseListAdapter houseListAdapter;//列表适配器
     private LRecyclerViewAdapter lRecyclerViewAdapter;//刷新适配器
     private int page = 0;
-    private int pageSize = 20;
+    private int pageSize = 100;
 
     public RentFragment() {
         // Required empty public constructor

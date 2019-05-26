@@ -58,7 +58,7 @@ public class HouseListAdapter extends RecyclerView.Adapter<HouseListAdapter.Hous
         try {
             if (roomInfo.getRoompicture()!=null&&!roomInfo.getRoompicture().getPicture().equals("")){
                 //封面加载
-                String coverUrl = URLConstrant.urlHead+"files/"+roomInfo.getRoompicture().getPicture();
+                String coverUrl = URLConstrant.url+"files/"+roomInfo.getRoompicture().getPicture();
                 Log.d("图片地址", "onBindViewHolder: "+coverUrl);
                 Glide.with(context)
                         .load(coverUrl)
